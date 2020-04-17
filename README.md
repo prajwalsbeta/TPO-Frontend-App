@@ -28,19 +28,61 @@ git clone https://github.com/yourid/path-to-repo.git
 git init
 ```
 
-4. Add remote origine
+4. Assign the original repo to a remote called "upstream"
+
+```
+git remote add upstream https://github.com/aissmstpo/TPO-Backend-App.git
+```
+
+5. If you cloned a while ago, get the latest changes from upstream:
+
+```
+git checkout master
+git pull upstream master
+```
+
+6. Add remote origine
 
 ```git
 git remote add origin  https://github.com/yourid/path-to-repo.git
 ```
 
-5. To setup the environment open cmd/terminal and run:
+7. To setup the environment open cmd/terminal and run:
 
 ```
 npm install
 ```
 
 You are ready to work now.
+Complete your work then
+
+8. Create a new topic branch (off the main project development branch) to contain your feature, change, or fix:
+
+```
+git checkout -b <topic-branch-name>
+```
+
+9. Commit your changes
+
+```
+git commit -m "<write some message>"
+```
+
+10. Push your topic branch up to your fork:
+
+```
+git push origin <topic-branch-name>
+
+```
+
+11. Open a Pull Request with a clear title and description.
+
+12. After your Pull Request is away, you might want to get yourself back onto master and delete the topic branch:
+
+```
+git checkout master
+git branch -D <topic-branch-name>
+```
 
 ---
 
@@ -57,5 +99,3 @@ You are ready to work now.
 
 -   `npm start` compile the code, start server and show result in browser.
 -   `npm build` compile the code and save it to "dist" folder.
-
-##

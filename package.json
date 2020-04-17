@@ -28,6 +28,9 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^3.5.2",
     "html-webpack-plugin": "^4.2.0",
+    "husky": "^4.2.5",
+    "prettier": "2.0.4",
+    "pretty-quick": "^2.0.1",
     "style-loader": "^1.1.4",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
@@ -36,5 +39,10 @@
   "dependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
-  }
+  },
+  "husky": { 
+    "hooks": {
+      "pre-commit": "pretty-quick --staged" 
+    }
+  } 
 }

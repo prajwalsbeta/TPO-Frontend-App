@@ -31,7 +31,7 @@ git init
 4. Assign the original repo to a remote called "upstream"
 
 ```
-git remote add upstream https://github.com/aissmstpo/TPO-Backend-App.git
+git remote add upstream https://github.com/aissmstpo/TPO-Frontend-App.git
 ```
 
 5. If you cloned a while ago, get the latest changes from upstream:

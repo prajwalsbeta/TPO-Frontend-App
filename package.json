@@ -4,9 +4,9 @@
 	"description": "tpo react application",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "webpack-dev-server --mode development --open",
-		"build": "webpack --mode production"
+		"build": "webpack --mode production",
+		"doc": "jsdoc -c jsdoc.json"
 	},
 	"repository": {
 		"type": "git",
@@ -38,6 +38,7 @@
 		"webpack-dev-server": "^3.10.3"
 	},
 	"dependencies": {
+		"formik": "^2.1.4",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1"
 	},

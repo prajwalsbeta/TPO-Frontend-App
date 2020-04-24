@@ -99,3 +99,4 @@ git branch -D <topic-branch-name>
 
 -   `npm start` compile the code, start server and show result in browser.
 -   `npm build` compile the code and save it to "dist" folder.
+-   `npm run doc` generates the documentation in "docs" folder, you can see the docs after you run `npm strat` on http://localhost:8080/docs/index.html

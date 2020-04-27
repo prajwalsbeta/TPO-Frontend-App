@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>JSDoc: Home</title>
+		<title>JSDoc: Source: App.js</title>
 
 		<script src="scripts/prettify/prettify.js"></script>
 		<script src="scripts/prettify/lang-css.js"></script>
@@ -15,9 +15,45 @@
 
 	<body>
 		<div id="main">
-			<h1 class="page-title">Home</h1>
+			<h1 class="page-title">Source: App.js</h1>
 
-			<h3></h3>
+			<section>
+				<article>
+					<pre class="prettyprint source linenums"><code>import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import MainContent from './components/college/MainContent';
+import Header from './components/college/Header';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
+// import Temp from './temp'
+/**
+ * Template File
+ */
+function App() {
+	const drawerWidth = 240;
+	const useStyles = makeStyles((theme) => ({
+		root: {
+			display: 'flex',
+		},
+	}));
+
+	const classes = useStyles();
+	return (
+		&lt;div className={classes.root}>
+			&lt;CssBaseline /> {/*This is to normailze the CSS (Builtin component)*/}
+			&lt;Router>
+				&lt;Header />
+				&lt;MainContent />
+			&lt;/Router>
+		&lt;/div>
+		// &lt;Temp/>
+	);
+}
+
+export default App;
+</code></pre>
+				</article>
+			</section>
 		</div>
 
 		<nav>

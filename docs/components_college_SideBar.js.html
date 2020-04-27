@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>JSDoc: Source: components/college/SideBar.js</title>
+
+		<script src="scripts/prettify/prettify.js"></script>
+		<script src="scripts/prettify/lang-css.js"></script>
+		<!--[if lt IE 9]>
+			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css" />
+		<link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+	</head>
+
+	<body>
+		<div id="main">
+			<h1 class="page-title">Source: components/college/SideBar.js</h1>
+
+			<section>
+				<article>
+					<pre class="prettyprint source linenums"><code>import React, { Fragment } from 'react';
+
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Info from '@material-ui/icons/Info';
+import PeopleIcon from '@material-ui/icons/People';
+import BusinessIcon from '@material-ui/icons/Business';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import SchoolIcon from '@material-ui/icons/School';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import HomeIcon from '@material-ui/icons/Home';
+import { Link } from 'react-router-dom';
+
+const drawerWidth = 240;
+const useStyles = makeStyles((theme) => ({
+	root: {
+		display: 'flex',
+	},
+	toolbar: theme.mixins.toolbar,
+	drawerPaper: {
+		width: drawerWidth,
+	},
+	nested: {
+		paddingLeft: theme.spacing(4),
+	},
+}));
+
+/**
+ * This is Navigation menu sidebar
+ * @param {*} props
+ */
+function SideBar(props) {
+	const { container } = props;
+	const classes = useStyles();
+	const theme = useTheme();
+
+	const [open, setOpen] = React.useState('Home');
+
+	const handleClick = (event, selected) => {
+		setOpen(selected);
+	};
+	/**
+	 * Menu item object format
+	 * @typedef {object} 
+	 * @property {string} title
+	 * @property {JSX} titleIcon
+	 * @property {Array.&lt;string>} Sublist
+	 * @property {Array.&lt;JSX>} SublistIcon
+	 * @property {Array.&lt;string>} SublistLink - Redirect to path
+	 */
+
+	/**
+	 * list of objects of Menu items
+	 * @type {Array.&lt;Menus>}
+	 */
+	const menuItems = [
+		{
+			title: 'Student',
+			titleIcon: &lt;PeopleIcon />,
+			Sublist: ['View Students', 'Approve Registrations'],
+			SublistIcon: [&lt;FormatListNumberedIcon />, &lt;CheckCircleIcon />],
+			SublistLink: ['/view-students', '/approve-students'],
+		},
+		{
+			title: 'Company',
+			titleIcon: &lt;BusinessIcon />,
+			Sublist: [
+				'View Company Details',
+				'Approve Registrations',
+				'Approve Date for Campus Placement',
+				'View Upcoming Placements',
+				'View Ongoing Placements',
+				'View Placement Completed',
+			],
+			SublistIcon: [
+				&lt;FormatListNumberedIcon />,
+				&lt;CheckCircleIcon />,
+				&lt;CheckCircleIcon />,
+				&lt;FormatListNumberedIcon />,
+				&lt;FormatListNumberedIcon />,
+				&lt;FormatListNumberedIcon />,
+			],
+			SublistLink: [
+				'/view-company',
+				'/approve-company',
+				'/approve-date',
+				'/upcoming-placements',
+				'/ongoing-placements',
+				'/view-placements',
+			],
+		},
+		{
+			title: 'College',
+			titleIcon: &lt;SchoolIcon />,
+			Sublist: ['View Placement Statistics', 'QnA'],
+			SublistIcon: [&lt;FormatListNumberedIcon />, &lt;QuestionAnswerIcon />],
+			SublistLink: ['/statistics', '/QnA'],
+		},
+	];
+
+	return (
+		&lt;div style={{ width: 240 }}>
+			&lt;div className={classes.toolbar}>
+				&lt;Typography variant="h4" noWrap style={{ paddingTop: '5%', textAlign: 'center' }}>
+					AISSMS{' '}
+				&lt;/Typography>
+			&lt;/div>
+			&lt;Divider />
+			&lt;List>
+				&lt;Link style={{ color: 'inherit', textDecoration: 'none' }} to="/">
+					&lt;ListItem button key={'home'}>
+						&lt;ListItemIcon>
+							&lt;HomeIcon />
+						&lt;/ListItemIcon>
+						&lt;ListItemText primary={'Home'} />
+					&lt;/ListItem>
+				&lt;/Link>
+			&lt;/List>
+			&lt;Divider />
+			{menuItems.map((item) => {
+				return (
+					&lt;Fragment>
+						&lt;List>
+							&lt;ListItem button onClick={(event) => handleClick(event, item.title)} key={item.title}>
+								&lt;ListItemIcon>{item.titleIcon}&lt;/ListItemIcon>
+								&lt;ListItemText primary={item.title} />
+								{open === item.title ? &lt;ExpandLess /> : &lt;ExpandMore />}
+							&lt;/ListItem>
+							&lt;Divider />
+							{item.Sublist.map((sublist, index) => {
+								return (
+									&lt;Collapse in={open === item.title} timeout="auto" unmountOnExit>
+										&lt;List component="div" disablePadding>
+											&lt;Link
+												style={{ color: 'inherit', textDecoration: 'none' }}
+												to={item.SublistLink[index]}
+											>
+												&lt;ListItem button className={classes.nested} key={sublist[index]}>
+													&lt;ListItemIcon>{item.SublistIcon[index]}&lt;/ListItemIcon>
+													&lt;ListItemText primary={item.Sublist[index]} />
+												&lt;/ListItem>
+											&lt;/Link>
+										&lt;/List>
+									&lt;/Collapse>
+								);
+							})}
+						&lt;/List>
+					&lt;/Fragment>
+				);
+			})}
+			&lt;Divider />
+			&lt;List>
+				&lt;Link style={{ color: 'inherit', textDecoration: 'none' }} to="/about-us">
+					&lt;ListItem button key={'About Us'}>
+						&lt;ListItemIcon>
+							&lt;Info />
+						&lt;/ListItemIcon>
+						&lt;ListItemText primary={'About Us'} />
+					&lt;/ListItem>
+				&lt;/Link>
+			&lt;/List>
+		&lt;/div>
+	);
+}
+
+export default SideBar;
+</code></pre>
+				</article>
+			</section>
+		</div>
+
+		<nav>
+			<h2><a href="index.html">Home</a></h2>
+			<h3>Global</h3>
+			<ul>
+				<li><a href="global.html#AboutUs">AboutUs</a></li>
+				<li><a href="global.html#App">App</a></li>
+				<li><a href="global.html#Header">Header</a></li>
+				<li><a href="global.html#SideBar">SideBar</a></li>
+				<li><a href="global.html#useStyles">useStyles</a></li>
+			</ul>
+		</nav>
+
+		<br class="clear" />
+
+		<footer>
+			Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Mon Apr 27 2020
+			15:31:08 GMT+0530 (India Standard Time)
+		</footer>
+
+		<script>
+			prettyPrint();
+		</script>
+		<script src="scripts/linenumber.js"></script>
+	</body>
+</html>

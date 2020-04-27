@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>JSDoc: Home</title>
+		<title>JSDoc: Source: components/college/Pages/about-us.js</title>
 
 		<script src="scripts/prettify/prettify.js"></script>
 		<script src="scripts/prettify/lang-css.js"></script>
@@ -15,9 +15,52 @@
 
 	<body>
 		<div id="main">
-			<h1 class="page-title">Home</h1>
+			<h1 class="page-title">Source: components/college/Pages/about-us.js</h1>
 
-			<h3></h3>
+			<section>
+				<article>
+					<pre class="prettyprint source linenums"><code>import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { Paper } from '@material-ui/core';
+import { BrowserRouter as Router, Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
+
+const drawerWidth = 240;
+const useStyles = makeStyles((theme) => ({
+	root: {
+		display: 'flex',
+	},
+	toolbar: theme.mixins.toolbar,
+	drawerPaper: {
+		width: drawerWidth,
+		textAlign: 'center',
+	},
+	content: {
+		flexGrow: 1,
+		padding: theme.spacing(3),
+	},
+}));
+/**
+ * About us
+ * @param {*} props 
+ */
+function AboutUs(props) {
+	const { container } = props;
+	const classes = useStyles();
+
+	return (
+		&lt;React.Fragment>
+			&lt;Paper>
+				&lt;Typography variant="h3">About Us&lt;/Typography>
+			&lt;/Paper>
+		&lt;/React.Fragment>
+	);
+}
+
+export default AboutUs;
+</code></pre>
+				</article>
+			</section>
 		</div>
 
 		<nav>

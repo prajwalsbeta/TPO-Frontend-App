@@ -18,12 +18,9 @@ function Header(props) {
 	const classes = useStyles();
 	const theme = useTheme();
 	const [mobileOpen, setMobileOpen] = React.useState(false);
-	console.log(mobileOpen);
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
 	};
-
-	console.log(classes);
 	const drawer = <SideBar />;
 
 	return (

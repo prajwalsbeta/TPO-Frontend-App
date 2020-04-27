@@ -17,11 +17,10 @@ function MainContent(props) {
 	return (
 		<main className={classes.content}>
 			<div className={classes.toolbar} />
-            <Paper>
-			<Typography variant="h3">Main Content</Typography>
-            </Paper>
+			<Paper>
+				<Typography variant="h3">Main Content</Typography>
+			</Paper>
 		</main>
-		<Footer />
 	);
 }
 

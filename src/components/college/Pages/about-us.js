@@ -19,7 +19,10 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(3),
 	},
 }));
-
+/**
+ * About us
+ * @param {*} props
+ */
 function AboutUs(props) {
 	const { container } = props;
 	const classes = useStyles();

@@ -42,7 +42,20 @@ function SideBar(props) {
 	const handleClick = (event, selected) => {
 		setOpen(selected);
 	};
+	/**
+	 * Menu item object format
+	 * @typedef {object}
+	 * @property {string} title
+	 * @property {JSX} titleIcon
+	 * @property {Array.<string>} Sublist
+	 * @property {Array.<JSX>} SublistIcon
+	 * @property {Array.<string>} SublistLink - Redirect to path
+	 */
 
+	/**
+	 * list of objects of Menu items
+	 * @type {Array.<Menus>}
+	 */
 	const menuItems = [
 		{
 			title: 'Student',

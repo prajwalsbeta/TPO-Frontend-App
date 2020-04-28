@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>JSDoc: Source: components/college/Pages/view-students.js</title>
+
+		<script src="scripts/prettify/prettify.js"></script>
+		<script src="scripts/prettify/lang-css.js"></script>
+		<!--[if lt IE 9]>
+			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css" />
+		<link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+	</head>
+
+	<body>
+		<div id="main">
+			<h1 class="page-title">Source: components/college/Pages/view-students.js</h1>
+
+			<section>
+				<article>
+					<pre class="prettyprint source linenums"><code>import React from 'react';
+import MaterialTable from 'material-table';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { Typography } from '@material-ui/core';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,} from '@material-ui/core/';
+
+function ViewStudents(props) {
+	const [open, setOpen] = React.useState(false);
+
+	const handleClickOpen = () => {
+	  setOpen(true);
+	};
+  
+	const handleClose = () => {
+	  setOpen(false);
+	};
+  
+	function createData(class_, board, year, percentage) {
+	  return { class_, board, year, percentage };
+	}
+	
+	const rows = [
+	  createData('10th', 'SSC', '2015', '90'),
+	];  
+
+	const [state, setState] = React.useState({
+	  columns: [
+		{ title: 'SR.NO', field: 'srNo', type: 'numeric' },
+		{ title: 'Name', field: 'name' },
+		{ title: 'Class', field: 'class', lookup :{FE: 'FE',SE:'SE',TE:'TE',BE:'BE'}},
+		{title: 'Department',field: 'department',},
+		{title: 'Roll No.',field: 'rollNo',},
+	  ],
+	  /**Temporary data 
+	   * #TODO create using API data
+	   */
+	  data: [
+		{
+		  srNo: 1,
+		  name:'asdf',
+		  class:'TE',
+		  department:'Computer',
+		  rollNo:'100CS00',
+		},{
+		  srNo: 1,
+		  name:'asdf',
+		  class:'TE',
+		  department:'Computer',
+		  rollNo:'100CS00',
+		},
+		{
+		  srNo: 1,
+		  name:'asdf',
+		  class:'TE',
+		  department:'Computer',
+		  rollNo:'100CS00',
+		},
+		{
+		  srNo: 1,
+		  name:'asdf',
+		  class:'TE',
+		  department:'Computer',
+		  rollNo:'100CS00',
+		},
+	  ],
+	});
+  
+	return (
+		&lt;React.Fragment>
+	  &lt;MaterialTable
+		title="Student Details"
+		columns={state.columns}
+		actions={[
+			{
+			  icon: ()=>&lt;VisibilityIcon/>,
+			  tooltip: 'View User',
+			  onClick: () => {
+				setOpen(true);
+			  }
+			},
+		]}
+		data={state.data}
+		options={{
+		  grouping: true,
+		  headerStyle: {
+			backgroundColor: '#01579b',
+			color: '#FFF'
+		  },
+		  actionsColumnIndex:-1,
+		  filtering: true,
+		}}
+	  />
+		{/**This is for the Popup generated on clicking student for details
+		 * #TODO handel edit and save
+		 */}
+	  &lt;Dialog open={open} onClose={handleClose} aria-labelledby="student-view-title" fullWidth>
+	  &lt;DialogTitle id="form-dialog-title">Name&lt;/DialogTitle>
+	  &lt;DialogContent>
+	  &lt;Typography variant='h6' >Personal Details:&lt;/Typography>
+		&lt;DialogContent style={{display:'flex', flexDirection:'row', justifyContent:"space-between"}}>
+		  &lt;div>
+			&lt;Typography >Name&lt;/Typography>
+			&lt;Typography >E-mail:&lt;/Typography>
+			&lt;Typography >Mobile No:&lt;/Typography>
+		  &lt;/div>
+		  &lt;img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" style={{width: '30%', height: '30%'}}/>
+		&lt;/DialogContent>
+		&lt;DialogContent>
+		  &lt;Typography variant='h6'>Class Details:&lt;/Typography>
+		  &lt;Typography>Department:&lt;/Typography>
+		  &lt;Typography>Class:&lt;/Typography>
+		  &lt;Typography>Roll No:&lt;/Typography>
+		&lt;/DialogContent>
+		&lt;DialogContent>
+		  &lt;Typography variant='h6'>Acadamic Details:&lt;/Typography>
+		  &lt;TableContainer component={Paper}>
+			&lt;Table size="small" aria-label="acadamic-table">
+			  &lt;TableHead>
+				&lt;TableRow key={'table-heading-vs1'}>
+				  &lt;TableCell>Class&lt;/TableCell>
+				  &lt;TableCell >Board&lt;/TableCell>
+				  &lt;TableCell >Year of Passing&lt;/TableCell>
+				  &lt;TableCell >Percentage&lt;/TableCell>
+				&lt;/TableRow>
+			  &lt;/TableHead>
+			  &lt;TableBody>
+				{rows.map((row) => (
+				  &lt;TableRow key={`${row.class}1`}>
+					&lt;TableCell >{row.class_}&lt;/TableCell>
+					&lt;TableCell >{row.board}&lt;/TableCell>
+					&lt;TableCell >{row.year}&lt;/TableCell>
+					&lt;TableCell >{row.percentage}&lt;/TableCell>
+				  &lt;/TableRow>
+				))}
+			  &lt;/TableBody>
+			&lt;/Table>
+		  &lt;/TableContainer>
+		&lt;/DialogContent>
+		  &lt;DialogContent>
+			&lt;Typography>Apply for Placements:&lt;/Typography>
+		  &lt;/DialogContent>&lt;DialogContent>
+			&lt;Typography>Status:&lt;/Typography>
+		  &lt;/DialogContent>
+	  &lt;/DialogContent>
+	  &lt;DialogActions>
+		&lt;Button onClick={handleClose} color="primary">
+		  Cancel
+		&lt;/Button>
+		&lt;Button onClick={handleClose} color="primary">
+		  Edit
+		&lt;/Button>
+	  &lt;/DialogActions>
+	&lt;/Dialog>
+	&lt;/React.Fragment>
+	);
+  }
+  
+export default ViewStudents</code></pre>
+				</article>
+			</section>
+		</div>
+
+		<nav>
+			<h2><a href="index.html">Home</a></h2>
+			<h3>Global</h3>
+			<ul>
+				<li><a href="global.html#AboutUs">AboutUs</a></li>
+				<li><a href="global.html#App">App</a></li>
+				<li><a href="global.html#data">data</a></li>
+				<li><a href="global.html#Header">Header</a></li>
+				<li><a href="global.html#SideBar">SideBar</a></li>
+				<li><a href="global.html#useStyles">useStyles</a></li>
+			</ul>
+		</nav>
+
+		<br class="clear" />
+
+		<footer>
+			Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Tue Apr 28 2020
+			23:05:31 GMT+0530 (India Standard Time)
+		</footer>
+
+		<script>
+			prettyPrint();
+		</script>
+		<script src="scripts/linenumber.js"></script>
+	</body>
+</html>

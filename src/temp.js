@@ -1,157 +1,96 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
-
-const useStyles = makeStyles((theme) => ({
-	grow: {
-		flexGrow: 1,
-	},
-	menuButton: {
-		marginRight: theme.spacing(2),
-	},
-	title: {
-		display: 'none',
-		[theme.breakpoints.up('sm')]: {
-			display: 'block',
-		},
-	},
-	sectionDesktop: {
-		display: 'none',
-		[theme.breakpoints.up('md')]: {
-			display: 'flex',
-		},
-	},
-	sectionMobile: {
-		display: 'flex',
-		[theme.breakpoints.up('md')]: {
-			display: 'none',
-		},
-	},
-}));
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core/';
 
 export default function Temp() {
-	const classes = useStyles();
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+	const [open, setOpen] = React.useState(false);
 
-	const isMenuOpen = Boolean(anchorEl);
-	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-	const handleProfileMenuOpen = (event) => {
-		setAnchorEl(event.currentTarget);
+	const handleClickOpen = () => {
+		setOpen(true);
 	};
 
-	const handleMobileMenuClose = () => {
-		setMobileMoreAnchorEl(null);
+	const handleClose = () => {
+		setOpen(false);
 	};
 
-	const handleMenuClose = () => {
-		setAnchorEl(null);
-		handleMobileMenuClose();
-	};
+	function createData(class_, board, year, percentage) {
+		return { class_, board, year, percentage };
+	}
 
-	const handleMobileMenuOpen = (event) => {
-		setMobileMoreAnchorEl(event.currentTarget);
-	};
-
-	const menuId = 'account-menu';
-	const renderMenu = (
-		<Menu
-			anchorEl={anchorEl}
-			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-			id={menuId}
-			keepMounted
-			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-			open={isMenuOpen}
-			onClose={handleMenuClose}
-		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
-		</Menu>
-	);
-
-	const mobileMenuId = 'account-menu-mobile';
-	const renderMobileMenu = (
-		<Menu
-			anchorEl={mobileMoreAnchorEl}
-			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-			id={mobileMenuId}
-			keepMounted
-			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-			open={isMobileMenuOpen}
-			onClose={handleMobileMenuClose}
-		>
-			<MenuItem>
-				<IconButton aria-label="show 11 new notifications" color="inherit">
-					<Badge badgeContent={11} color="secondary">
-						<NotificationsIcon />
-					</Badge>
-				</IconButton>
-				<p>Notifications</p>
-			</MenuItem>
-			<MenuItem onClick={handleProfileMenuOpen}>
-				<IconButton
-					aria-label="account of current user"
-					aria-controls="primary-search-account-menu"
-					aria-haspopup="true"
-					color="inherit"
-				>
-					<AccountCircle />
-				</IconButton>
-				<p>Profile</p>
-			</MenuItem>
-		</Menu>
-	);
+	const rows = [createData('10th', 'SSC', '2015', '90')];
 
 	return (
-		<div className={classes.grow}>
-			<AppBar position="static">
-				<Toolbar>
-					<Typography className={classes.title} variant="h6" noWrap>
-						Material-UI
-					</Typography>
-					<div className={classes.grow} />
-					<div className={classes.sectionDesktop}>
-						<IconButton aria-label="show 17 new notifications" color="inherit">
-							<Badge badgeContent={17} color="secondary">
-								<NotificationsIcon />
-							</Badge>
-						</IconButton>
-						<IconButton
-							edge="end"
-							aria-label="account of current user"
-							aria-controls={menuId}
-							aria-haspopup="true"
-							onClick={handleProfileMenuOpen}
-							color="inherit"
-						>
-							<AccountCircle />
-						</IconButton>
-					</div>
-					<div className={classes.sectionMobile}>
-						<IconButton
-							aria-label="show more"
-							aria-controls={mobileMenuId}
-							aria-haspopup="true"
-							onClick={handleMobileMenuOpen}
-							color="inherit"
-						>
-							<MoreIcon />
-						</IconButton>
-					</div>
-				</Toolbar>
-			</AppBar>
-			{renderMobileMenu}
-			{renderMenu}
+		<div>
+			<Button variant="outlined" color="primary" onClick={handleClickOpen}>
+				Open form dialog
+			</Button>
+			<Dialog open={open} onClose={handleClose} aria-labelledby="student-view-title" fullWidth>
+				<DialogTitle id="form-dialog-title">Name</DialogTitle>
+				<DialogContent>
+					<Typography variant="h6">Personal Details:</Typography>
+					<DialogContentText
+						style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+					>
+						<div>
+							<Typography>Name</Typography>
+							<Typography>E-mail:</Typography>
+							<Typography>Mobile No:</Typography>
+						</div>
+						<img src="http://loremflickr.com/300/200" style={{ width: '30%', height: '30%' }} />
+					</DialogContentText>
+					<DialogContentText>
+						<Typography variant="h6">Class Details:</Typography>
+						<Typography>Department:</Typography>
+						<Typography>Class:</Typography>
+						<Typography>Roll No:</Typography>
+					</DialogContentText>
+					<DialogContentText>
+						<Typography variant="h6">Acadamic Details:</Typography>
+						<TableContainer component={Paper}>
+							<Table size="small" aria-label="acadamic-table">
+								<TableHead>
+									<TableRow>
+										<TableCell>Class</TableCell>
+										<TableCell>Board</TableCell>
+										<TableCell>Year of Passing</TableCell>
+										<TableCell>Percentage</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{rows.map((row) => (
+										<TableRow key={row.class}>
+											<TableCell>{row.class_}</TableCell>
+											<TableCell>{row.board}</TableCell>
+											<TableCell>{row.year}</TableCell>
+											<TableCell>{row.percentage}</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</DialogContentText>
+					<DialogContent>
+						<Typography>Apply for Placements:</Typography>
+					</DialogContent>
+					<DialogContent>
+						<Typography>Status:</Typography>
+					</DialogContent>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleClose} color="primary">
+						Cancel
+					</Button>
+					<Button onClick={handleClose} color="primary">
+						Edit
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</div>
 	);
 }

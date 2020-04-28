@@ -68,3 +68,6 @@ typings/
 .vscode
 *.swp
 *.swo
+
+#temp
+temp.js

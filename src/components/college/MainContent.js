@@ -13,6 +13,7 @@ import UpcomingPlacements from './Pages/upcoming-placements';
 import ViewCompany from './Pages/view-company';
 import ViewPlacements from './Pages/view-placements';
 import ViewStudents from './Pages/view-students';
+import Temp from '../../temp';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -107,6 +108,12 @@ function MainContent(props) {
 				</Switch>
 			</main>
 		</React.Fragment>
+		// <React.Fragment>
+		// 	<main className={classes.content}>
+		// 	<div className={classes.toolbar} />
+		// 	<Temp/>
+		// 	</main>
+		// </React.Fragment>
 	);
 }
 

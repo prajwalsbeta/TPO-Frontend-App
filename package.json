@@ -41,7 +41,10 @@
 	"dependencies": {
 		"@material-ui/core": "^4.9.11",
 		"@material-ui/icons": "^4.9.1",
+		"@material-ui/pickers": "^3.2.10",
 		"formik": "^2.1.4",
+		"material-table": "^1.57.2",
+		"material-ui-image": "^3.2.3",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-router-dom": "^5.1.2"

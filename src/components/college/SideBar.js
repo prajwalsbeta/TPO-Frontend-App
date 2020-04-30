@@ -109,7 +109,7 @@ function SideBar(props) {
 				</Typography>
 			</div>
 			<Divider />
-			<List>
+			<List key="list-menu-key">
 				<Link style={{ color: 'inherit', textDecoration: 'none' }} to="/">
 					<ListItem button key={'home'}>
 						<ListItemIcon>
@@ -118,12 +118,11 @@ function SideBar(props) {
 						<ListItemText primary={'Home'} />
 					</ListItem>
 				</Link>
-			</List>
-			<Divider />
-			{menuItems.map((item) => {
-				return (
-					<Fragment>
-						<List>
+
+				<Divider />
+				{menuItems.map((item) => {
+					return (
+						<Fragment key={`${item.title}-f`}>
 							<ListItem button onClick={(event) => handleClick(event, item.title)} key={item.title}>
 								<ListItemIcon>{item.titleIcon}</ListItemIcon>
 								<ListItemText primary={item.title} />
@@ -132,7 +131,12 @@ function SideBar(props) {
 							<Divider />
 							{item.Sublist.map((sublist, index) => {
 								return (
-									<Collapse in={open === item.title} timeout="auto" unmountOnExit>
+									<Collapse
+										in={open === item.title}
+										timeout="auto"
+										unmountOnExit
+										key={`${item.title}-${index}c`}
+									>
 										<List component="div" disablePadding>
 											<Link
 												style={{ color: 'inherit', textDecoration: 'none' }}
@@ -147,12 +151,11 @@ function SideBar(props) {
 									</Collapse>
 								);
 							})}
-						</List>
-					</Fragment>
-				);
-			})}
-			<Divider />
-			<List>
+						</Fragment>
+					);
+				})}
+				<Divider />
+
 				<Link style={{ color: 'inherit', textDecoration: 'none' }} to="/about-us">
 					<ListItem button key={'About Us'}>
 						<ListItemIcon>

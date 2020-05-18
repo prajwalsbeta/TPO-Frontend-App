@@ -2,7 +2,6 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
-import { BrowserRouter as Router, Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -20,17 +19,17 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function ApproveStudents(props) {
+function CreateNotice(props) {
 	const { container } = props;
 	const classes = useStyles();
 
 	return (
 		<React.Fragment>
 			<Paper>
-				<Typography variant="h3">Approve Students</Typography>
+				<Typography variant="h3">CreateNotice</Typography>
 			</Paper>
 		</React.Fragment>
 	);
 }
 
-export default ApproveStudents;
+export default CreateNotice;

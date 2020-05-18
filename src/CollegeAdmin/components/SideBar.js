@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Collapse, Typography } from '@material-ui/core';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Info from '@material-ui/icons/Info';
@@ -9,9 +9,8 @@ import BusinessIcon from '@material-ui/icons/Business';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import SchoolIcon from '@material-ui/icons/School';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -37,10 +36,11 @@ function SideBar(props) {
 	const classes = useStyles();
 	const theme = useTheme();
 
-	const [open, setOpen] = React.useState('Home');
+	const [open, setOpen] = React.useState({ Home: true, College: false, Company: false, Student: false });
 
 	const handleClick = (event, selected) => {
-		setOpen(selected);
+		var temp = !open[selected];
+		setOpen({ ...open, [selected]: temp });
 	};
 	/**
 	 * Menu item object format
@@ -126,13 +126,13 @@ function SideBar(props) {
 							<ListItem button onClick={(event) => handleClick(event, item.title)} key={item.title}>
 								<ListItemIcon>{item.titleIcon}</ListItemIcon>
 								<ListItemText primary={item.title} />
-								{open === item.title ? <ExpandLess /> : <ExpandMore />}
+								{open[item.title] ? <ExpandLess /> : <ExpandMore />}
 							</ListItem>
 							<Divider />
 							{item.Sublist.map((sublist, index) => {
 								return (
 									<Collapse
-										in={open === item.title}
+										in={open[item.title]}
 										timeout="auto"
 										unmountOnExit
 										key={`${item.title}-${index}c`}

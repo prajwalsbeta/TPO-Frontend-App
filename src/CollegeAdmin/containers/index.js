@@ -1,0 +1,12 @@
+export { default as AboutUs } from './about-us';
+export { default as ApproveCompany } from './approve-company';
+export { default as ApproveDate } from './approve-date';
+export { default as ApproveStudents } from './approve-students';
+export { default as Home } from './Home';
+export { default as OngoingPlacements } from './ongoing-placements';
+export { default as QnA } from './QnA';
+export { default as Statistics } from './statistics';
+export { default as UpcomingPlacements } from './upcoming-placements';
+export { default as ViewCompany } from './view-company';
+export { default as ViewPlacements } from './view-placements';
+export { default as ViewStudents } from './view-students';

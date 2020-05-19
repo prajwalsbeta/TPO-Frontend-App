@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	appBar: {
+		backgroundColor: 'Red',
 		[theme.breakpoints.up('sm')]: {
 			width: `calc(100% - ${drawerWidth}px)`,
 			marginLeft: drawerWidth,
@@ -36,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
 	content: {
 		flexGrow: 1,
 		padding: theme.spacing(3),
+	},
+	nested: {
+		paddingLeft: theme.spacing(4),
 	},
 }));
 

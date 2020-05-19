@@ -1,19 +1,20 @@
 import React from 'react';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Switch, Route } from 'react-router-dom';
-import AboutUs from './Pages/about-us';
-import ApproveCompany from './Pages/approve-company';
-import ApproveDate from './Pages/approve-date';
-import ApproveStudents from './Pages/approve-students';
-import Home from './Pages/Home';
-import OngoingPlacements from './Pages/ongoing-placements';
-import QnA from './Pages/QnA';
-import Statistics from './Pages/statistics';
-import UpcomingPlacements from './Pages/upcoming-placements';
-import ViewCompany from './Pages/view-company';
-import ViewPlacements from './Pages/view-placements';
-import ViewStudents from './Pages/view-students';
-import Temp from '../../temp';
+import {
+	AboutUs,
+	ApproveCompany,
+	ApproveDate,
+	ApproveStudents,
+	Home,
+	OngoingPlacements,
+	QnA,
+	Statistics,
+	UpcomingPlacements,
+	ViewCompany,
+	ViewPlacements,
+	ViewStudents,
+} from '../containers';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -108,12 +109,6 @@ function MainContent(props) {
 				</Switch>
 			</main>
 		</React.Fragment>
-		// <React.Fragment>
-		// 	<main className={classes.content}>
-		// 	<div className={classes.toolbar} />
-		// 	<Temp/>
-		// 	</main>
-		// </React.Fragment>
 	);
 }
 

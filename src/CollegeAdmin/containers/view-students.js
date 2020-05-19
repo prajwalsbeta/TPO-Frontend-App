@@ -1,32 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { Typography } from '@material-ui/core';
+import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core/';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import axios from 'axios';
 
+/**this is state for storing open/display state the overlay/dialog box */
 function ViewStudents(props) {
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
 
-	const handleClickOpen = () => {
+	/**Handel view details */
+	const handleClickOpen = (event, rowData) => {
 		setOpen(true);
 	};
-
+	/**Handel close view details */
 	const handleClose = () => {
 		setOpen(false);
 	};
 
+	/**
+	 * Thid func crates the rows of table
+	 * @param {string} class_
+	 * @param {sring} board
+	 * @param {*} year
+	 * @param {float} percentage
+	 */
 	function createData(class_, board, year, percentage) {
 		return { class_, board, year, percentage };
 	}
 
 	const rows = [createData('10th', 'SSC', '2015', '90')];
 
-	const [state, setState] = React.useState({
+	const [tableData, setTableData] = useState({
 		columns: [
 			{ title: 'SR.NO', field: 'srNo', type: 'numeric' },
 			{ title: 'Name', field: 'name' },
@@ -68,22 +73,32 @@ function ViewStudents(props) {
 			},
 		],
 	});
+	/****TODO add URL and setTableData */
+	// useEffect(()=>{
+	// 	axios.get('URL')
+	// 	.then(response=>{
+	// 		console.log(response);
+	// 	})
+	// 	.catch(err=>{
+	// 		console.error(err);
+	// 	});
+	// },[])
 
 	return (
 		<React.Fragment>
 			<MaterialTable
 				title="Student Details"
-				columns={state.columns}
+				columns={tableData.columns}
 				actions={[
 					{
 						icon: () => <VisibilityIcon />,
-						tooltip: 'View User',
-						onClick: () => {
-							setOpen(true);
+						tooltip: 'View details',
+						onClick: (event, rowData) => {
+							handleClickOpen(event, rowData);
 						},
 					},
 				]}
-				data={state.data}
+				data={tableData.data}
 				options={{
 					grouping: true,
 					headerStyle: {
@@ -97,7 +112,13 @@ function ViewStudents(props) {
 			{/**This is for the Popup generated on clicking student for details
 			 * #TODO handel edit and save
 			 */}
-			<Dialog open={open} onClose={handleClose} aria-labelledby="student-view-title" fullWidth>
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				aria-labelledby="student-view-title"
+				fullWidth
+				disableEnforceFocus
+			>
 				<DialogTitle id="form-dialog-title">Name</DialogTitle>
 				<DialogContent>
 					<Typography variant="h6">Personal Details:</Typography>

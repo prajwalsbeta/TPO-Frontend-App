@@ -1,31 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import MainContent from './components/college/MainContent';
-import Header from './components/college/Header';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
-// import Temp from './temp'
-/**
- * Template File
- */
-function App() {
-	const drawerWidth = 240;
-	const useStyles = makeStyles((theme) => ({
-		root: {
-			display: 'flex',
-		},
-	}));
+import CollegeAdmin from './CollegeAdmin/CollegeAdmin';
+import Company from './Company/Company';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-	const classes = useStyles();
+function App() {
+	const [userRole, setUserRole] = useState('admin');
+
 	return (
-		<div className={classes.root}>
+		<div>
 			<CssBaseline /> {/*This is to normailze the CSS (Builtin component)*/}
-			<Router>
-				<Header />
-				<MainContent />
-			</Router>
+			<Router>{userRole == 'admin' ? <CollegeAdmin /> : <Company />}</Router>
 		</div>
-		// <Temp/>
 	);
 }
 

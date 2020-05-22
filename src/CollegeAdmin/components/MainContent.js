@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MainContent(props) {
-
 	const { container, routes } = props;
 	const classes = useStyles();
 	const theme = useTheme();

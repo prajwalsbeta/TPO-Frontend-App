@@ -5,6 +5,22 @@ import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle }
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@material-ui/core/';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import axios from 'axios';
+import CustomDialog from './components/custom-dialog.component';
+
+//Redux
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import {
+	selectViewStudentDialogStatus,
+	selectTableData,
+	selectRejectStudentDialogStatus,
+} from '../redux/approve_students/approve.students.selectors';
+import {
+	toggleViewApproveStudentDialog,
+	toggleRejectStudentDialog,
+} from '../redux/approve_students/approve.students.actions';
+//Redux
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -23,27 +39,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ApproveStudents(props) {
-	const [openViewDialogue, setOpenViewDialogue] = useState(false);
-
-	/**Handel view details dailogue */
-	const handleClickOpenDialogue1 = (event, rowData) => {
-		setOpenViewDialogue(true);
-	};
-	/**Handel close view details dialogue */
-	const handleCloseDialogue1 = () => {
-		setOpenViewDialogue(false);
-	};
-
-	const [openViewDialogue2, setOpenViewDialogue2] = useState(false);
-
-	/**Handel reject details dialogue*/
-	const handleClickOpenDialogue2 = (event, rowData) => {
-		setOpenViewDialogue2(true);
-	};
-	/**Handel close reject details  dialogue*/
-	const handleCloseDialogue2 = () => {
-		setOpenViewDialogue2(false);
-	};
+	const {
+		viewStudentDialogStatus,
+		tableData,
+		toggleViewApproveStudentDialog,
+		rejectStudentDialogStatus,
+		toggleRejectStudentDialog,
+	} = props;
 
 	/**
 	 * Thid func crates the rows of table
@@ -58,48 +60,6 @@ function ApproveStudents(props) {
 
 	const rows = [createData('10th', 'SSC', '2015', '90')];
 
-	const [tableData, setTableData] = useState({
-		columns: [
-			{ title: 'SR.NO', field: 'srNo', type: 'numeric' },
-			{ title: 'Name', field: 'name' },
-			{ title: 'Class', field: 'class', lookup: { FE: 'FE', SE: 'SE', TE: 'TE', BE: 'BE' } },
-			{ title: 'Department', field: 'department' },
-			{ title: 'Roll No.', field: 'rollNo' },
-		],
-		/**Temporary data
-		 * #TODO create using API data
-		 */
-		data: [
-			{
-				srNo: 1,
-				name: 'asdf',
-				class: 'TE',
-				department: 'Computer',
-				rollNo: '100CS00',
-			},
-			{
-				srNo: 1,
-				name: 'asdf',
-				class: 'TE',
-				department: 'Computer',
-				rollNo: '100CS00',
-			},
-			{
-				srNo: 1,
-				name: 'asdf',
-				class: 'TE',
-				department: 'Computer',
-				rollNo: '100CS00',
-			},
-			{
-				srNo: 1,
-				name: 'asdf',
-				class: 'TE',
-				department: 'Computer',
-				rollNo: '100CS00',
-			},
-		],
-	});
 	/****TODO add URL and setTableData */
 	// useEffect(()=>{
 	// 	axios.get('URL')
@@ -121,7 +81,7 @@ function ApproveStudents(props) {
 						icon: () => <VisibilityIcon />,
 						tooltip: 'View details',
 						onClick: (event, rowData) => {
-							handleClickOpenDialogue1(event, rowData);
+							toggleViewApproveStudentDialog();
 						},
 					},
 				]}
@@ -140,8 +100,10 @@ function ApproveStudents(props) {
 			 * #TODO handel edit and save
 			 */}
 			<Dialog
-				open={openViewDialogue}
-				onClose={handleCloseDialogue1}
+				open={viewStudentDialogStatus}
+				onClose={() => {
+					toggleViewApproveStudentDialog();
+				}}
 				aria-labelledby="student-view-title"
 				fullWidth
 			>
@@ -198,21 +160,21 @@ function ApproveStudents(props) {
 					</DialogContent>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleCloseDialogue1} color="primary">
+					<Button onClick={() => toggleViewApproveStudentDialog()} color="primary">
 						Cancel
 					</Button>
-					<Button onClick={handleCloseDialogue1} color="primary">
+					<Button onClick={() => toggleViewApproveStudentDialog()} color="primary">
 						Approve
 					</Button>
-					<Button onClick={handleClickOpenDialogue2} color="primary">
+					<Button onClick={() => toggleRejectStudentDialog()} color="primary">
 						Reject
 					</Button>
 				</DialogActions>
 			</Dialog>
 
 			<Dialog
-				open={openViewDialogue2}
-				onClose={handleCloseDialogue2}
+				open={rejectStudentDialogStatus}
+				onClose={() => toggleRejectStudentDialog()}
 				aria-labelledby="student-view-title"
 				fullWidth
 			>
@@ -229,10 +191,10 @@ function ApproveStudents(props) {
 					/>
 				</div>
 				<DialogActions>
-					<Button onClick={handleCloseDialogue2} color="primary">
+					<Button onClick={() => toggleRejectStudentDialog()} color="primary">
 						Cancel
 					</Button>
-					<Button onClick={handleCloseDialogue2} color="primary">
+					<Button onClick={() => toggleRejectStudentDialog()} color="primary">
 						Submit
 					</Button>
 				</DialogActions>
@@ -241,4 +203,15 @@ function ApproveStudents(props) {
 	);
 }
 
-export default ApproveStudents;
+const mapStateToProps = createStructuredSelector({
+	viewStudentDialogStatus: selectViewStudentDialogStatus,
+	tableData: selectTableData,
+	rejectStudentDialogStatus: selectRejectStudentDialogStatus,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	toggleViewApproveStudentDialog: () => dispatch(toggleViewApproveStudentDialog()),
+	toggleRejectStudentDialog: () => dispatch(toggleRejectStudentDialog()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ApproveStudents);

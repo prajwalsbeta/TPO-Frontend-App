@@ -13,6 +13,13 @@ import HomeIcon from '@material-ui/icons/Home';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
+//Redux
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { setOpen } from '../redux/sidebar/sidebar.actions';
+import { selectSidebar, selectMenuItems } from '../redux/sidebar/sidebar.selectors';
+//Redux
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -32,16 +39,10 @@ const useStyles = makeStyles((theme) => ({
  * @param {*} props
  */
 function SideBar(props) {
-	const { container } = props;
+	const { container, setOpen, sidebar, menuItems } = props;
 	const classes = useStyles();
 	const theme = useTheme();
 
-	const [open, setOpen] = React.useState({ Home: true, College: false, Company: false, Student: false });
-
-	const handleClick = (event, selected) => {
-		var temp = !open[selected];
-		setOpen({ ...open, [selected]: temp });
-	};
 	/**
 	 * Menu item object format
 	 * @typedef {object}
@@ -51,55 +52,6 @@ function SideBar(props) {
 	 * @property {Array.<JSX>} SublistIcon
 	 * @property {Array.<string>} SublistLink - Redirect to path
 	 */
-
-	/**
-	 * list of objects of Menu items
-	 * @type {Array.<Menus>}
-	 */
-	const menuItems = [
-		{
-			title: 'Student',
-			titleIcon: <PeopleIcon />,
-			Sublist: ['View Students', 'Approve Registrations'],
-			SublistIcon: [<FormatListNumberedIcon />, <CheckCircleIcon />],
-			SublistLink: ['/view-students', '/approve-students'],
-		},
-		{
-			title: 'Company',
-			titleIcon: <BusinessIcon />,
-			Sublist: [
-				'View Company Details',
-				'Approve Registrations',
-				'Approve Date for Campus Placement',
-				'View Upcoming Placements',
-				'View Ongoing Placements',
-				'View Placement Completed',
-			],
-			SublistIcon: [
-				<FormatListNumberedIcon />,
-				<CheckCircleIcon />,
-				<CheckCircleIcon />,
-				<FormatListNumberedIcon />,
-				<FormatListNumberedIcon />,
-				<FormatListNumberedIcon />,
-			],
-			SublistLink: [
-				'/view-company',
-				'/approve-company',
-				'/approve-date',
-				'/upcoming-placements',
-				'/ongoing-placements',
-				'/view-placements',
-			],
-		},
-		{
-			title: 'College',
-			titleIcon: <SchoolIcon />,
-			Sublist: ['View Placement Statistics', 'QnA'],
-			SublistIcon: [<FormatListNumberedIcon />, <QuestionAnswerIcon />],
-			SublistLink: ['/statistics', '/QnA'],
-		},
-	];
 
 	return (
 		<div style={{ width: 240 }}>
@@ -123,16 +75,16 @@ function SideBar(props) {
 				{menuItems.map((item) => {
 					return (
 						<Fragment key={`${item.title}-f`}>
-							<ListItem button onClick={(event) => handleClick(event, item.title)} key={item.title}>
+							<ListItem button onClick={() => setOpen(item.title)} key={item.title}>
 								<ListItemIcon>{item.titleIcon}</ListItemIcon>
 								<ListItemText primary={item.title} />
-								{open[item.title] ? <ExpandLess /> : <ExpandMore />}
+								{sidebar[item.title] ? <ExpandLess /> : <ExpandMore />}
 							</ListItem>
 							<Divider />
 							{item.Sublist.map((sublist, index) => {
 								return (
 									<Collapse
-										in={open[item.title]}
+										in={sidebar[item.title]}
 										timeout="auto"
 										unmountOnExit
 										key={`${item.title}-${index}c`}
@@ -169,4 +121,13 @@ function SideBar(props) {
 	);
 }
 
-export default SideBar;
+const mapStateToProps = createStructuredSelector({
+	sidebar: selectSidebar,
+	menuItems: selectMenuItems,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setOpen: (selected) => dispatch(setOpen(selected)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

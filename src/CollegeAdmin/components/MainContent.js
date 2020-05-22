@@ -23,9 +23,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MainContent(props) {
+
 	const { container, routes } = props;
 	const classes = useStyles();
 	const theme = useTheme();
+
 	return (
 		<React.Fragment>
 			<main className={classes.content}>

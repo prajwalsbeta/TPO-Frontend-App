@@ -13,6 +13,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
+
 //Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -39,9 +40,11 @@ const useStyles = makeStyles((theme) => ({
  * @param {*} props
  */
 function SideBar(props) {
+
 	const { container, setOpen, sidebar, menuItems } = props;
 	const classes = useStyles();
 	const theme = useTheme();
+
 	/**
 	 * Menu item object format
 	 * @typedef {object}
@@ -74,15 +77,18 @@ function SideBar(props) {
 				{menuItems.map((item) => {
 					return (
 						<Fragment key={`${item.title}-f`}>
+
 							<ListItem button onClick={() => setOpen(item.title)} key={item.title}>
 								<ListItemIcon>{item.titleIcon}</ListItemIcon>
 								<ListItemText primary={item.title} />
 								{sidebar[item.title] ? <ExpandLess /> : <ExpandMore />}
+
 							</ListItem>
 							<Divider />
 							{item.Sublist.map((sublist, index) => {
 								return (
 									<Collapse
+
 										in={sidebar[item.title]}
 										timeout="auto"
 										unmountOnExit
@@ -119,6 +125,7 @@ function SideBar(props) {
 		</div>
 	);
 }
+
 
 const mapStateToProps = createStructuredSelector({
 	sidebar: selectSidebar,

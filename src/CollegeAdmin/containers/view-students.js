@@ -5,18 +5,19 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import axios from 'axios';
 
+
+//Redux
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import { selectTableData, selectDialogOpen } from '../redux/view-students/view.students.selectors';
+import { openViewStudentDialog, toggleViewStudentDialog } from '../redux/view-students/view.students.actions';
+//Redux
+
 /**this is state for storing open/display state the overlay/dialog box */
 function ViewStudents(props) {
-	const [open, setOpen] = useState(false);
+	const { tableData, dialog_open, toggleViewStudentDialog } = props;
 
-	/**Handel view details */
-	const handleClickOpen = (event, rowData) => {
-		setOpen(true);
-	};
-	/**Handel close view details */
-	const handleClose = () => {
-		setOpen(false);
-	};
 
 	/**
 	 * Thid func crates the rows of table
@@ -31,48 +32,6 @@ function ViewStudents(props) {
 
 	const rows = [createData('10th', 'SSC', '2015', '90')];
 
-	const [tableData, setTableData] = useState({
-		columns: [
-			{ title: 'SR.NO', field: 'srNo', type: 'numeric' },
-			{ title: 'Name', field: 'name' },
-			{ title: 'Class', field: 'class', lookup: { FE: 'FE', SE: 'SE', TE: 'TE', BE: 'BE' } },
-			{ title: 'Department', field: 'department' },
-			{ title: 'Roll No.', field: 'rollNo' },
-		],
-		/**Temporary data
-		 * #TODO create using API data
-		 */
-		data: [
-			{
-				srNo: 1,
-				name: 'asdf',
-				class: 'TE',
-				department: 'Computer',
-				rollNo: '100CS00',
-			},
-			{
-				srNo: 1,
-				name: 'asdf',
-				class: 'TE',
-				department: 'Computer',
-				rollNo: '100CS00',
-			},
-			{
-				srNo: 1,
-				name: 'asdf',
-				class: 'TE',
-				department: 'Computer',
-				rollNo: '100CS00',
-			},
-			{
-				srNo: 1,
-				name: 'asdf',
-				class: 'TE',
-				department: 'Computer',
-				rollNo: '100CS00',
-			},
-		],
-	});
 	/****TODO add URL and setTableData */
 	// useEffect(()=>{
 	// 	axios.get('URL')
@@ -94,7 +53,9 @@ function ViewStudents(props) {
 						icon: () => <VisibilityIcon />,
 						tooltip: 'View details',
 						onClick: (event, rowData) => {
-							handleClickOpen(event, rowData);
+
+							toggleViewStudentDialog();
+
 						},
 					},
 				]}
@@ -113,8 +74,10 @@ function ViewStudents(props) {
 			 * #TODO handel edit and save
 			 */}
 			<Dialog
-				open={open}
-				onClose={handleClose}
+
+				open={dialog_open}
+				onClose={() => toggleViewStudentDialog()}
+
 				aria-labelledby="student-view-title"
 				fullWidth
 				disableEnforceFocus
@@ -172,10 +135,12 @@ function ViewStudents(props) {
 					</DialogContent>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose} color="primary">
+
+					<Button onClick={() => toggleViewStudentDialog()} color="primary">
 						Cancel
 					</Button>
-					<Button onClick={handleClose} color="primary">
+					<Button onClick={() => toggleViewStudentDialog()} color="primary">
+
 						Edit
 					</Button>
 				</DialogActions>
@@ -184,4 +149,15 @@ function ViewStudents(props) {
 	);
 }
 
-export default ViewStudents;
+
+const mapStateToProps = createStructuredSelector({
+	tableData: selectTableData,
+	dialog_open: selectDialogOpen,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	toggleViewStudentDialog: () => dispatch(toggleViewStudentDialog()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewStudents);
+

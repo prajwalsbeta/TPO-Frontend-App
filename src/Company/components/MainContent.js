@@ -10,7 +10,7 @@ import {
 	StartPlacement,
 	ViewNotice,
 	ViewPlacements,
-} from '../containers';
+} from '../container';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({

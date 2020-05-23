@@ -1,7 +1,9 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core';
+import { Paper, TextField } from '@material-ui/core';
+
+import StartPlacementForm from './components/start-placement-form/start-placement-form.component';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +29,7 @@ function StartPlacement(props) {
 		<React.Fragment>
 			<Paper>
 				<Typography variant="h3">StartPlacement</Typography>
+				<StartPlacementForm />
 			</Paper>
 		</React.Fragment>
 	);

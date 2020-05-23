@@ -5,6 +5,7 @@ import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle }
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@material-ui/core/';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import axios from 'axios';
+
 import CustomDialog from './components/custom-dialog.component';
 
 //Redux
@@ -59,6 +60,7 @@ function ApproveStudents(props) {
 	}
 
 	const rows = [createData('10th', 'SSC', '2015', '90')];
+
 
 	/****TODO add URL and setTableData */
 	// useEffect(()=>{
@@ -160,6 +162,7 @@ function ApproveStudents(props) {
 					</DialogContent>
 				</DialogContent>
 				<DialogActions>
+
 					<Button onClick={() => toggleViewApproveStudentDialog()} color="primary">
 						Cancel
 					</Button>
@@ -173,6 +176,7 @@ function ApproveStudents(props) {
 			</Dialog>
 
 			<Dialog
+
 				open={rejectStudentDialogStatus}
 				onClose={() => toggleRejectStudentDialog()}
 				aria-labelledby="student-view-title"
@@ -191,10 +195,12 @@ function ApproveStudents(props) {
 					/>
 				</div>
 				<DialogActions>
+
 					<Button onClick={() => toggleRejectStudentDialog()} color="primary">
 						Cancel
 					</Button>
 					<Button onClick={() => toggleRejectStudentDialog()} color="primary">
+
 						Submit
 					</Button>
 				</DialogActions>
@@ -202,6 +208,7 @@ function ApproveStudents(props) {
 		</React.Fragment>
 	);
 }
+
 
 const mapStateToProps = createStructuredSelector({
 	viewStudentDialogStatus: selectViewStudentDialogStatus,

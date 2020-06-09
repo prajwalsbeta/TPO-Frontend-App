@@ -61,7 +61,6 @@ function ApproveStudents(props) {
 
 	const rows = [createData('10th', 'SSC', '2015', '90')];
 
-
 	/****TODO add URL and setTableData */
 	// useEffect(()=>{
 	// 	axios.get('URL')
@@ -89,13 +88,14 @@ function ApproveStudents(props) {
 				]}
 				data={tableData.data}
 				options={{
-					grouping: true,
+					// grouping: true,
 					headerStyle: {
 						backgroundColor: '#01579b',
 						color: '#FFF',
 					},
 					actionsColumnIndex: -1,
 					filtering: true,
+					exportButton: true,
 				}}
 			/>
 			{/**This is for the Popup generated on clicking student for details
@@ -162,7 +162,6 @@ function ApproveStudents(props) {
 					</DialogContent>
 				</DialogContent>
 				<DialogActions>
-
 					<Button onClick={() => toggleViewApproveStudentDialog()} color="primary">
 						Cancel
 					</Button>
@@ -176,7 +175,6 @@ function ApproveStudents(props) {
 			</Dialog>
 
 			<Dialog
-
 				open={rejectStudentDialogStatus}
 				onClose={() => toggleRejectStudentDialog()}
 				aria-labelledby="student-view-title"
@@ -195,12 +193,16 @@ function ApproveStudents(props) {
 					/>
 				</div>
 				<DialogActions>
-
 					<Button onClick={() => toggleRejectStudentDialog()} color="primary">
 						Cancel
 					</Button>
-					<Button onClick={() => toggleRejectStudentDialog()} color="primary">
-
+					<Button
+						onClick={() => {
+							toggleViewApproveStudentDialog();
+							toggleRejectStudentDialog();
+						}}
+						color="primary"
+					>
 						Submit
 					</Button>
 				</DialogActions>
@@ -208,7 +210,6 @@ function ApproveStudents(props) {
 		</React.Fragment>
 	);
 }
-
 
 const mapStateToProps = createStructuredSelector({
 	viewStudentDialogStatus: selectViewStudentDialogStatus,

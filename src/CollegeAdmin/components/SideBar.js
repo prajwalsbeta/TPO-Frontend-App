@@ -1,18 +1,11 @@
 import React, { Fragment } from 'react';
 
 import { Divider, List, ListItem, ListItemIcon, ListItemText, Collapse, Typography } from '@material-ui/core';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Info from '@material-ui/icons/Info';
-import PeopleIcon from '@material-ui/icons/People';
-import BusinessIcon from '@material-ui/icons/Business';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import SchoolIcon from '@material-ui/icons/School';
 import HomeIcon from '@material-ui/icons/Home';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-
 
 //Redux
 import { connect } from 'react-redux';
@@ -40,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
  * @param {*} props
  */
 function SideBar(props) {
-
 	const { container, setOpen, sidebar, menuItems } = props;
 	const classes = useStyles();
 	const theme = useTheme();
@@ -77,18 +69,15 @@ function SideBar(props) {
 				{menuItems.map((item) => {
 					return (
 						<Fragment key={`${item.title}-f`}>
-
 							<ListItem button onClick={() => setOpen(item.title)} key={item.title}>
 								<ListItemIcon>{item.titleIcon}</ListItemIcon>
 								<ListItemText primary={item.title} />
 								{sidebar[item.title] ? <ExpandLess /> : <ExpandMore />}
-
 							</ListItem>
 							<Divider />
 							{item.Sublist.map((sublist, index) => {
 								return (
 									<Collapse
-
 										in={sidebar[item.title]}
 										timeout="auto"
 										unmountOnExit
@@ -125,7 +114,6 @@ function SideBar(props) {
 		</div>
 	);
 }
-
 
 const mapStateToProps = createStructuredSelector({
 	sidebar: selectSidebar,

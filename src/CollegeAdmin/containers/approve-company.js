@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
-import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@material-ui/core';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@material-ui/core/';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
@@ -127,6 +127,7 @@ function ApproveCompany(props) {
 					<Typography>Phase 2:</Typography>
 					<Typography>Phase 3:</Typography>
 				</DialogContent>
+				<Divider />
 				<DialogContent>
 					<Typography variant="h6">Placements dates:</Typography>
 					<Typography>Phase 1:</Typography>

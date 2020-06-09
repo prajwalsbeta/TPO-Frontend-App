@@ -7,6 +7,7 @@ import viewApproveStudentReducer from './approve_students/approve.students.reduc
 import viewApproveCompanyReducer from './approve-company/approve.company.reducer';
 import viewApproveDateReducer from './approve-date/approve.date.reducer';
 import viewCompanyReducer from './view_company/view.company.reducers';
+import viewUpcomingReducer from './upcoming-placements/view.upcoming.reducers';
 
 export default combineReducers({
 	sidebar: sidebarReducer,
@@ -15,5 +16,6 @@ export default combineReducers({
 	viewApproveStudents: viewApproveStudentReducer,
 	viewApproveCompany: viewApproveCompanyReducer,
 	viewCompany: viewCompanyReducer,
+	viewUpcoming: viewUpcomingReducer,
 	viewApproveDate: viewApproveDateReducer,
 });

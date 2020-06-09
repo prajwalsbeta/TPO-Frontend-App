@@ -6,6 +6,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import BusinessIcon from '@material-ui/icons/Business';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import SchoolIcon from '@material-ui/icons/School';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 export const menuItems = [
 	{
@@ -29,7 +30,7 @@ export const menuItems = [
 		SublistIcon: [
 			<FormatListNumberedIcon />,
 			<CheckCircleIcon />,
-			<CheckCircleIcon />,
+			<AccessTimeIcon />,
 			<FormatListNumberedIcon />,
 			<FormatListNumberedIcon />,
 			<FormatListNumberedIcon />,

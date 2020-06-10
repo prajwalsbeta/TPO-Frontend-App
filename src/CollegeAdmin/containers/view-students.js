@@ -5,7 +5,6 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import axios from 'axios';
 
-
 //Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -17,7 +16,6 @@ import { openViewStudentDialog, toggleViewStudentDialog } from '../redux/view-st
 /**this is state for storing open/display state the overlay/dialog box */
 function ViewStudents(props) {
 	const { tableData, dialog_open, toggleViewStudentDialog } = props;
-
 
 	/**
 	 * Thid func crates the rows of table
@@ -53,9 +51,7 @@ function ViewStudents(props) {
 						icon: () => <VisibilityIcon />,
 						tooltip: 'View details',
 						onClick: (event, rowData) => {
-
 							toggleViewStudentDialog();
-
 						},
 					},
 				]}
@@ -68,16 +64,15 @@ function ViewStudents(props) {
 					},
 					actionsColumnIndex: -1,
 					filtering: true,
+					exportButton: true,
 				}}
 			/>
 			{/**This is for the Popup generated on clicking student for details
 			 * #TODO handel edit and save
 			 */}
 			<Dialog
-
 				open={dialog_open}
 				onClose={() => toggleViewStudentDialog()}
-
 				aria-labelledby="student-view-title"
 				fullWidth
 				disableEnforceFocus
@@ -135,12 +130,10 @@ function ViewStudents(props) {
 					</DialogContent>
 				</DialogContent>
 				<DialogActions>
-
 					<Button onClick={() => toggleViewStudentDialog()} color="primary">
 						Cancel
 					</Button>
 					<Button onClick={() => toggleViewStudentDialog()} color="primary">
-
 						Edit
 					</Button>
 				</DialogActions>
@@ -148,7 +141,6 @@ function ViewStudents(props) {
 		</React.Fragment>
 	);
 }
-
 
 const mapStateToProps = createStructuredSelector({
 	tableData: selectTableData,
@@ -160,4 +152,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewStudents);
-

@@ -5,7 +5,7 @@ import Company from './Company/Company';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 function App() {
-	const [userRole, setUserRole] = useState('com');
+	const [userRole, setUserRole] = useState('admin');
 
 	return (
 		<div>

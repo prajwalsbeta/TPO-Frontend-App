@@ -1,10 +1,10 @@
 export const tableData = {
 	columns: [
-		{ title: 'SR.NO', field: 'srNo', type: 'numeric' },
-		{ title: 'Name', field: 'name' },
+		{ title: 'SR.NO', field: 'id', type: 'numeric' },
+		{ title: 'Name', field: 'full_name' },
 		{ title: 'Class', field: 'class', lookup: { FE: 'FE', SE: 'SE', TE: 'TE', BE: 'BE' } },
 		{ title: 'Department', field: 'department' },
-		{ title: 'Roll No.', field: 'rollNo' },
+		{ title: 'Roll No.', field: 'roll_number' },
 	],
 	data: [
 		{

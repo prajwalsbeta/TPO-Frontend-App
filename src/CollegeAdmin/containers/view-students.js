@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
-import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import {
+	Typography,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Backdrop,
+	CircularProgress,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core/';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import axios from 'axios';
-
-//Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { selectTableData, selectDialogOpen, selectLoading } from '../redux/view-students/view.students.selectors';
+import {
+	openViewStudentDialog,
+	toggleViewStudentDialog,
+	fetchViewStudent,
+} from '../redux/view-students/view.students.actions';
 
-import { selectTableData, selectDialogOpen } from '../redux/view-students/view.students.selectors';
-import { openViewStudentDialog, toggleViewStudentDialog } from '../redux/view-students/view.students.actions';
-//Redux
+const useStyles = makeStyles((theme) => ({
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#229',
+	},
+}));
 
-/**this is state for storing open/display state the overlay/dialog box */
 function ViewStudents(props) {
-	const { tableData, dialog_open, toggleViewStudentDialog } = props;
+	const classes = useStyles();
+	const { tableData, dialog_open, toggleViewStudentDialog, loading, fetchViewStudent } = props;
 
 	/**
 	 * Thid func crates the rows of table
@@ -40,6 +56,10 @@ function ViewStudents(props) {
 	// 		console.error(err);
 	// 	});
 	// },[])
+
+	useEffect(() => {
+		fetchViewStudent();
+	}, []);
 
 	return (
 		<React.Fragment>
@@ -138,6 +158,10 @@ function ViewStudents(props) {
 					</Button>
 				</DialogActions>
 			</Dialog>
+
+			<Backdrop className={classes.backdrop} open={loading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
 		</React.Fragment>
 	);
 }
@@ -145,10 +169,12 @@ function ViewStudents(props) {
 const mapStateToProps = createStructuredSelector({
 	tableData: selectTableData,
 	dialog_open: selectDialogOpen,
+	loading: selectLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleViewStudentDialog: () => dispatch(toggleViewStudentDialog()),
+	fetchViewStudent: () => dispatch(fetchViewStudent()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewStudents);

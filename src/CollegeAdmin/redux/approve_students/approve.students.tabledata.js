@@ -1,39 +1,60 @@
 export const tableData = {
 	columns: [
-		{ title: 'SR.NO', field: 'srNo', type: 'numeric' },
-		{ title: 'Name', field: 'name' },
+		{ title: 'SR.NO', field: 'tableData.id', type: 'numeric' },
+		{ title: 'Name', field: 'full_name' },
 		{ title: 'Class', field: 'class', lookup: { FE: 'FE', SE: 'SE', TE: 'TE', BE: 'BE' } },
 		{ title: 'Department', field: 'department' },
-		{ title: 'Roll No.', field: 'rollNo' },
+		{ title: 'Roll No.', field: 'roll_number' },
 	],
-	data: [
-		{
-			srNo: 1,
-			name: 'Ash Ash',
-			class: 'TE',
-			department: 'EnTC',
-			rollNo: '102CS30',
+	data: [],
+	studentData: {
+		_id: '',
+		address: '',
+		age: 0,
+		avg_marks: {
+			$numberDecimal: '',
 		},
-		{
-			srNo: 2,
-			name: 'bob B',
-			class: 'TE',
-			department: 'Computer',
-			rollNo: '100CS20',
-		},
-		{
-			srNo: 3,
-			name: 'tim C',
-			class: 'BE',
-			department: 'Civil',
-			rollNo: '100CV10',
-		},
-		{
-			srNo: 4,
-			name: 'Sam N',
-			class: 'SE',
-			department: 'Mechinical',
-			rollNo: '100EE01',
-		},
-	],
+		certifications_url: '',
+		choice_to_avail_placements: true,
+		class: '',
+		department: '',
+		email: '',
+		extra_activities: [
+			{
+				description: '',
+				title: '',
+			},
+		],
+		full_name: '',
+		gender: '',
+		live_backlog: false,
+		mobile: '',
+		other_qualifications: [
+			{
+				'board/university': '',
+				class: '',
+				percentage: {
+					$numberDecimal: '',
+				},
+				year_of_passing: '',
+			},
+		],
+		password: '',
+		photograph_url: '',
+		profile_completed: true,
+		projects: [
+			{
+				description: '',
+				title: '',
+			},
+		],
+		role: '',
+		roll_number: '',
+		sem_marks: [
+			{
+				$numberDecimal: '',
+			},
+		],
+		status: '',
+	},
 };

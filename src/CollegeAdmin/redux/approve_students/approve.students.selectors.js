@@ -16,3 +16,23 @@ export const selectRejectStudentDialogStatus = createSelector(
 	[selectViewApproveStudents],
 	(viewApproveStudents) => viewApproveStudents.reject_student_dialog_open
 );
+
+export const selectLoading = createSelector(
+	[selectViewApproveStudents],
+	(viewApproveStudents) => viewApproveStudents.loading
+);
+
+export const selectStudentData = createSelector(
+	[selectViewApproveStudents],
+	(viewApproveStudents) => viewApproveStudents.studentData
+);
+
+export const selectTableModified = createSelector(
+	[selectViewApproveStudents],
+	(viewApproveStudents) => viewApproveStudents.tableModified
+);
+
+export const selectError = createSelector(
+	[selectViewApproveStudents],
+	(viewApproveStudents) => viewApproveStudents.error
+);

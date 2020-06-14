@@ -36,11 +36,12 @@
 		"style-loader": "^1.1.4",
 		"webpack": "^4.42.1",
 		"webpack-cli": "^3.3.11",
-		"webpack-dev-server": "^3.10.3"
+		"webpack-dev-server": "^3.11.0"
 	},
 	"dependencies": {
 		"@material-ui/core": "^4.9.11",
 		"@material-ui/icons": "^4.9.1",
+		"@material-ui/lab": "^4.0.0-alpha.56",
 		"@material-ui/pickers": "^3.2.10",
 		"axios": "^0.19.2",
 		"formik": "^2.1.4",

@@ -35,20 +35,7 @@ import {
 } from '../redux/approve_students/approve.students.actions';
 import Alert from '../components/ErrorAlert';
 
-const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
-	root: {
-		display: 'flex',
-	},
-	toolbar: theme.mixins.toolbar,
-	drawerPaper: {
-		width: drawerWidth,
-		textAlign: 'center',
-	},
-	content: {
-		flexGrow: 1,
-		padding: theme.spacing(3),
-	},
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#229',
@@ -76,16 +63,6 @@ function ApproveStudents(props) {
 		setReason(event.target.value);
 	}
 	const classes = useStyles();
-	/****TODO add URL and setTableData */
-	// useEffect(()=>{
-	// 	axios.get('URL')
-	// 	.then(response=>{
-	// 		console.log(response);
-	// 	})
-	// 	.catch(err=>{
-	// 		console.error(err);
-	// 	});
-	// },[])
 	const [reason, setReason] = useState('');
 	useEffect(() => {
 		fetchApproveStudentTable();
@@ -119,7 +96,7 @@ function ApproveStudents(props) {
 				]}
 				data={tableData.data}
 				options={{
-					// grouping: true,
+					grouping: true,
 					headerStyle: {
 						backgroundColor: '#01579b',
 						color: '#FFF',
@@ -316,7 +293,7 @@ function ApproveStudents(props) {
 			>
 				<DialogTitle id="Dialogue-reject">Reason to Reject</DialogTitle>
 				<div style={{ margin: '20px' }}>
-					<form>
+					<form onSubmit={() => rejectApproveStudent(studentData._id, reason)}>
 						<TextField
 							id="reject-text"
 							label="Reason to reject"
@@ -328,21 +305,16 @@ function ApproveStudents(props) {
 							required
 							onChange={handleChange}
 						/>
+						<DialogActions>
+							<Button onClick={() => toggleRejectStudentDialog()} color="primary" disabled={loading}>
+								Cancel
+							</Button>
+							<Button type="submit" color="primary" disabled={loading}>
+								Submit
+							</Button>
+						</DialogActions>
 					</form>
 				</div>
-				<DialogActions>
-					<Button onClick={() => toggleRejectStudentDialog()} color="primary">
-						Cancel
-					</Button>
-					<Button
-						onClick={() => {
-							rejectApproveStudent(studentData._id, reason);
-						}}
-						color="primary"
-					>
-						Submit
-					</Button>
-				</DialogActions>
 			</Dialog>
 			<Backdrop className={classes.backdrop} open={loading}>
 				<CircularProgress color="inherit" />

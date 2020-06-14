@@ -1,38 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
-import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@material-ui/core';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@material-ui/core/';
+import {
+	Typography,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Divider,
+	TextField,
+	Backdrop,
+	CircularProgress,
+	Snackbar,
+} from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-
-//Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-
 import {
 	selectViewCompanyDialogStatus,
 	selectTableData,
 	selectRejectCompanyDialogStatus,
+	selectLoading,
+	selectCompanyData,
+	selectTableModified,
+	selectError,
 } from '../redux/approve-company/approve.company.selectors';
 import {
 	toggleViewApproveCompanyDialog,
 	toggleRejectCompanyDialog,
+	fetchApproveCompanyTable,
+	fetchApproveCompany,
+	rejectApproveCompany,
+	putApproveCompany,
 } from '../redux/approve-company/approve.company.actions';
-//Redux
+import Alert from '../components/ErrorAlert';
 
-const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
-	root: {
-		display: 'flex',
-	},
-	toolbar: theme.mixins.toolbar,
-	drawerPaper: {
-		width: drawerWidth,
-		textAlign: 'center',
-	},
-	content: {
-		flexGrow: 1,
-		padding: theme.spacing(3),
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#229',
 	},
 }));
 
@@ -43,31 +50,25 @@ function ApproveCompany(props) {
 		toggleViewApproveCompanyDialog,
 		rejectCompanyDialogStatus,
 		toggleRejectCompanyDialog,
+		loading,
+		fetchApproveCompany,
+		fetchApproveCompanyTable,
+		companyData,
+		putApproveCompany,
+		tableModified,
+		error,
+		rejectApproveCompany,
 	} = props;
 
-	/**
-	 * Thid func crates the rows of table
-	 * @param {string} class_
-	 * @param {sring} board
-	 * @param {*} year
-	 * @param {float} percentage
-	 */
-	function createData(class_, board, year, percentage) {
-		return { class_, board, year, percentage };
+	function handleChange(event) {
+		setReason(event.target.value);
 	}
 
-	const rows = [createData('10th', 'SSC', '2015', '90')];
-
-	/****TODO add URL and setTableData */
-	// useEffect(()=>{
-	// 	axios.get('URL')
-	// 	.then(response=>{
-	// 		console.log(response);
-	// 	})
-	// 	.catch(err=>{
-	// 		console.error(err);
-	// 	});
-	// },[])
+	const classes = useStyles();
+	const [reason, setReason] = useState('');
+	useEffect(() => {
+		fetchApproveCompanyTable();
+	}, []);
 
 	return (
 		<React.Fragment>
@@ -79,13 +80,19 @@ function ApproveCompany(props) {
 						icon: () => <VisibilityIcon />,
 						tooltip: 'View details',
 						onClick: (event, rowData) => {
-							toggleViewApproveCompanyDialog();
+							fetchApproveCompany(rowData._id);
 						},
+					},
+					{
+						icon: 'refresh',
+						tooltip: 'Refresh',
+						isFreeAction: true,
+						onClick: () => fetchApproveCompanyTable(),
 					},
 				]}
 				data={tableData.data}
 				options={{
-					// grouping: true,
+					grouping: true,
 					headerStyle: {
 						backgroundColor: '#01579b',
 						color: '#FFF',
@@ -104,44 +111,62 @@ function ApproveCompany(props) {
 					toggleViewApproveCompanyDialog();
 				}}
 				aria-labelledby="Company-view-title"
+				maxWidth="md"
 				fullWidth
 			>
 				<DialogTitle id="form-dialog-title">Company Details</DialogTitle>
 				<DialogContent>
-					<Typography>Company Name:</Typography>
-					<Typography>Email-id:</Typography>
-					<Typography>Concerened Person Name:</Typography>
-					<Typography>Mobile No.:</Typography>
-					<Typography>Address:</Typography>
-				</DialogContent>
-				<DialogContent>
-					<Typography variant="h6">Requirement Details:</Typography>
-					<Typography>Number of Students:</Typography>
-					<Typography>Interval of Requirement:</Typography>
-					<Typography>Cutoff:</Typography>
-					<Typography>Live Backlog:</Typography>
-				</DialogContent>
-				<DialogContent>
-					<Typography variant="h6">Phase Details:</Typography>
-					<Typography>Phase 1:</Typography>
-					<Typography>Phase 2:</Typography>
-					<Typography>Phase 3:</Typography>
-				</DialogContent>
-				<Divider />
-				<DialogContent>
-					<Typography variant="h6">Placements dates:</Typography>
-					<Typography>Phase 1:</Typography>
-					<Typography>Phase 2:</Typography>
-					<Typography>Phase 3:</Typography>
+					<DialogContent>
+						<Typography>
+							<b>Company Name:</b>
+							{` ${companyData.company_name}`}
+						</Typography>
+						<Typography>
+							<b>Email-id:</b>
+							{` ${companyData.concerned_person.email}`}
+						</Typography>
+						<Typography>
+							<b>Concerened Person Name:</b>
+							{` ${companyData.concerned_person.name}`}
+						</Typography>
+						<Typography>
+							<b>Mobile No.:</b>
+							{` ${companyData.concerned_person.contact}`}
+						</Typography>
+						<Typography>
+							<b>Address:</b>
+							{` ${companyData.address}`}
+						</Typography>
+					</DialogContent>
+					<DialogContent>
+						<Typography variant="h6">Requirement Details:</Typography>
+						<Typography>Number of Students:</Typography>
+						<Typography>Interval of Requirement:</Typography>
+						<Typography>Cutoff:</Typography>
+						<Typography>Live Backlog:</Typography>
+					</DialogContent>
+					<DialogContent>
+						<Typography variant="h6">Phase Details:</Typography>
+						<Typography>Phase 1:</Typography>
+						<Typography>Phase 2:</Typography>
+						<Typography>Phase 3:</Typography>
+					</DialogContent>
+					<Divider />
+					<DialogContent>
+						<Typography variant="h6">Placements dates:</Typography>
+						<Typography>Phase 1:</Typography>
+						<Typography>Phase 2:</Typography>
+						<Typography>Phase 3:</Typography>
+					</DialogContent>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={() => toggleViewApproveCompanyDialog()} color="primary">
+					<Button onClick={() => toggleViewApproveCompanyDialog()} color="primary" disabled={loading}>
 						Cancel
 					</Button>
-					<Button onClick={() => toggleViewApproveCompanyDialog()} color="primary">
+					<Button onClick={() => putApproveCompany(companyData._id)} color="primary" disabled={loading}>
 						Approve
 					</Button>
-					<Button onClick={() => toggleRejectCompanyDialog()} color="primary">
+					<Button onClick={() => toggleRejectCompanyDialog()} color="primary" disabled={loading}>
 						Reject
 					</Button>
 				</DialogActions>
@@ -155,31 +180,41 @@ function ApproveCompany(props) {
 			>
 				<DialogTitle id="Dialogue-reject">Reason to Reject</DialogTitle>
 				<div style={{ margin: '20px' }}>
-					<TextField
-						id="filled-multiline-static"
-						label="Reason to reject"
-						multiline
-						rows={12}
-						placeholder="Enter reason to reject"
-						variant="filled"
-						fullWidth
-					/>
+					<form onSubmit={() => rejectApproveCompany(companyData._id, reason)}>
+						<TextField
+							id="filled-multiline-static"
+							label="Reason to reject"
+							multiline
+							rows={12}
+							placeholder="Enter reason to reject"
+							variant="filled"
+							fullWidth
+							required
+							onChange={handleChange}
+						/>
+						<DialogActions>
+							<Button onClick={() => toggleRejectCompanyDialog()} color="primary" disabled={loading}>
+								Cancel
+							</Button>
+							<Button type="submit" color="primary" disabled={loading}>
+								Submit
+							</Button>
+						</DialogActions>
+					</form>
 				</div>
-				<DialogActions>
-					<Button onClick={() => toggleRejectCompanyDialog()} color="primary">
-						Cancel
-					</Button>
-					<Button
-						onClick={() => {
-							toggleViewApproveCompanyDialog();
-							toggleRejectCompanyDialog();
-						}}
-						color="primary"
-					>
-						Submit
-					</Button>
-				</DialogActions>
 			</Dialog>
+
+			<Snackbar
+				open={error != ''}
+				autoHideDuration={6000}
+				anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+			>
+				<Alert severity="error">{error}</Alert>
+			</Snackbar>
+
+			<Backdrop className={classes.backdrop} open={loading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
 		</React.Fragment>
 	);
 }
@@ -188,11 +223,19 @@ const mapStateToProps = createStructuredSelector({
 	viewCompanyDialogStatus: selectViewCompanyDialogStatus,
 	tableData: selectTableData,
 	rejectCompanyDialogStatus: selectRejectCompanyDialogStatus,
+	loading: selectLoading,
+	companyData: selectCompanyData,
+	tableModified: selectTableModified,
+	error: selectError,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleViewApproveCompanyDialog: () => dispatch(toggleViewApproveCompanyDialog()),
 	toggleRejectCompanyDialog: () => dispatch(toggleRejectCompanyDialog()),
+	fetchApproveCompanyTable: () => dispatch(fetchApproveCompanyTable()),
+	fetchApproveCompany: (id) => dispatch(fetchApproveCompany(id)),
+	putApproveCompany: (id) => dispatch(putApproveCompany(id)),
+	rejectApproveCompany: (id, r) => dispatch(rejectApproveCompany(id, r)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApproveCompany);

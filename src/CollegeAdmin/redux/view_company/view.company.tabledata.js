@@ -1,39 +1,40 @@
 export const tableData = {
 	columns: [
-		{ title: 'SR.NO', field: 'srNo', type: 'numeric' },
-		{ title: 'Company Name', field: 'name' },
-		{ title: 'Contact Person', field: 'contactPerson' },
-		{ title: 'Phone No', field: 'phone', type: 'numeric' },
-		{ title: 'Email', field: 'email', type: 'string' },
+		{ title: 'SR.NO', field: 'tableData.id', type: 'numeric' },
+		{ title: 'Company Name', field: 'company_name' },
+		{ title: 'Contact Person', field: 'concerned_person.name' },
+		{ title: 'Phone No', field: 'concerned_person.contact', type: 'string' },
+		{ title: 'Email', field: 'concerned_person.email', type: 'string' },
+		{ title: 'Position', field: 'concerned_person.position', type: 'string' },
 	],
-	data: [
-		{
-			srNo: 1,
-			name: 'Amazon',
-			contactPerson: 'Jeff',
-			phone: '1231231231',
-			email: 'jeff@amazon.in',
+	data: [],
+	companyData: {
+		_id: '',
+		address: '',
+		approved_date: {
+			$date: {
+				$numberLong: '',
+			},
 		},
-		{
-			srNo: 2,
-			name: 'Dell',
-			contactPerson: 'Deff',
-			phone: '1231231231',
-			email: 'deff@dell.in',
+		company_name: '',
+		concerned_person: {
+			contact: '',
+			email: '',
+			name: '',
+			position: '',
 		},
-		{
-			srNo: 3,
-			name: 'TCS',
-			contactPerson: 'Sam',
-			phone: '9999995555',
-			email: 'sam@tcs.in',
+		created_at: {
+			$date: {
+				$numberLong: '',
+			},
 		},
-		{
-			srNo: 4,
-			name: 'Amazon',
-			contactPerson: 'Bob',
-			phone: '8520852000',
-			email: 'bob@amazon.in',
+		profile_completed: true,
+		role: '',
+		updated_at: {
+			$date: {
+				$numberLong: '',
+			},
 		},
-	],
+		website: '',
+	},
 };

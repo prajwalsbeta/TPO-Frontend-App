@@ -9,6 +9,7 @@ import {
 	DialogTitle,
 	Backdrop,
 	CircularProgress,
+	Snackbar,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core/';
@@ -20,6 +21,7 @@ import {
 	selectDialogOpen,
 	selectLoading,
 	selectStudentData,
+	selectError,
 } from '../redux/view-students/view.students.selectors';
 import {
 	openViewStudentDialog,
@@ -27,6 +29,7 @@ import {
 	fetchViewStudentTable,
 	fetchViewStudent,
 } from '../redux/view-students/view.students.actions';
+import Alert from '../components/ErrorAlert';
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -45,6 +48,7 @@ function ViewStudents(props) {
 		fetchViewStudentTable,
 		studentData,
 		fetchViewStudent,
+		error,
 	} = props;
 
 	/**
@@ -81,8 +85,13 @@ function ViewStudents(props) {
 						tooltip: 'View details',
 						onClick: (event, rowData) => {
 							fetchViewStudent(rowData._id);
-							console.log(studentData);
 						},
+					},
+					{
+						icon: 'refresh',
+						tooltip: 'Refresh Data',
+						isFreeAction: true,
+						onClick: () => fetchViewStudentTable(),
 					},
 				]}
 				data={tableData.data}
@@ -111,7 +120,9 @@ function ViewStudents(props) {
 				<DialogTitle id="form-dialog-title">Student Details</DialogTitle>
 				<DialogContent>
 					<DialogContent>
-						<Typography variant="h6">Personal Details:</Typography>
+						<Typography variant="h5" gutterBottom>
+							Personal Details:
+						</Typography>
 					</DialogContent>
 					<DialogContent style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
 						<div>
@@ -147,7 +158,9 @@ function ViewStudents(props) {
 						/>
 					</DialogContent>
 					<DialogContent>
-						<Typography variant="h6">Current Class Details:</Typography>
+						<Typography variant="h5" gutterBottom>
+							Current Class Details:
+						</Typography>
 						<Typography>
 							<b>Department:</b>
 							{` ${studentData.department}`}
@@ -170,7 +183,9 @@ function ViewStudents(props) {
 						</Typography>
 					</DialogContent>
 					<DialogContent>
-						<Typography variant="h6">Acadamic Details:</Typography>
+						<Typography variant="h5" gutterBottom>
+							Acadamic Details:
+						</Typography>
 						<TableContainer component={Paper}>
 							<Table size="small" aria-label="acadamic-table">
 								<TableHead>
@@ -196,7 +211,10 @@ function ViewStudents(props) {
 					</DialogContent>
 
 					<DialogContent>
-						<Typography variant="h6"> Extracurricular Activities:</Typography>
+						<Typography variant="h5" gutterBottom>
+							{' '}
+							Extracurricular Activities:
+						</Typography>
 						<TableContainer component={Paper}>
 							<Table size="small" aria-label="acadamic-table">
 								<TableHead>
@@ -218,7 +236,10 @@ function ViewStudents(props) {
 					</DialogContent>
 
 					<DialogContent>
-						<Typography variant="h6"> Projects:</Typography>
+						<Typography variant="h5" gutterBottom>
+							{' '}
+							Projects:
+						</Typography>
 						<TableContainer component={Paper}>
 							<Table size="small" aria-label="acadamic-table">
 								<TableHead>
@@ -253,17 +274,24 @@ function ViewStudents(props) {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={() => toggleViewStudentDialog()} color="primary">
-						Cancel
+						OK
 					</Button>
-					<Button onClick={() => toggleViewStudentDialog()} color="primary">
+					{/* <Button onClick={() => toggleViewStudentDialog()} color="primary">
 						Edit
-					</Button>
+					</Button> */}
 				</DialogActions>
 			</Dialog>
 
 			<Backdrop className={classes.backdrop} open={loading}>
 				<CircularProgress color="inherit" />
 			</Backdrop>
+			<Snackbar
+				open={error != ''}
+				autoHideDuration={6000}
+				anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+			>
+				<Alert severity="error">{error}</Alert>
+			</Snackbar>
 		</React.Fragment>
 	);
 }
@@ -273,6 +301,7 @@ const mapStateToProps = createStructuredSelector({
 	dialog_open: selectDialogOpen,
 	loading: selectLoading,
 	studentData: selectStudentData,
+	error: selectError,
 });
 
 const mapDispatchToProps = (dispatch) => ({

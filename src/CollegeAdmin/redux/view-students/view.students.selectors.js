@@ -9,3 +9,5 @@ export const selectDialogOpen = createSelector([selectViewStudents], (viewStuden
 export const selectLoading = createSelector([selectViewStudents], (viewStudents) => viewStudents.loading);
 
 export const selectStudentData = createSelector([selectViewStudents], (viewStudents) => viewStudents.studentData);
+
+export const selectError = createSelector([selectViewStudents], (viewStudents) => viewStudents.error);

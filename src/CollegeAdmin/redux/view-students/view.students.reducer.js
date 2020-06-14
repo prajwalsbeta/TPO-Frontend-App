@@ -51,7 +51,7 @@ const viewStudentReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				loading: false,
-				studentData: {},
+				studentData: tableData.studentData,
 				error: action.payload,
 			};
 		default:

@@ -29,7 +29,7 @@ export const fetchViewStudentTable = () => {
 	return (dispatch) => {
 		dispatch(fetchViewStudentTableRequest());
 		axios
-			.get('http://aqueous-taiga-26335.herokuapp.com/api/v1/user/student/unapproved')
+			.get('http://aqueous-taiga-26335.herokuapp.com/api/v1/user/student/approved')
 			.then((response) => {
 				const studentTableData = response.data;
 				dispatch(fetchViewStudentTableSuccess(studentTableData));
@@ -67,7 +67,6 @@ export const fetchViewStudent = (id) => {
 			.get(`http://aqueous-taiga-26335.herokuapp.com/api/v1/user/${id}`)
 			.then((response) => {
 				const studentData = response.data;
-				console.log(studentData);
 				dispatch(fetchViewStudentSuccess(studentData));
 			})
 			.catch((error) => {

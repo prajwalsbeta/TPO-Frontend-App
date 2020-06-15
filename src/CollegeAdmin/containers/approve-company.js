@@ -101,6 +101,9 @@ function ApproveCompany(props) {
 					filtering: true,
 					exportButton: true,
 				}}
+				onRowClick={(event, rowData) => {
+					fetchApproveCompany(rowData._id);
+				}}
 			/>
 			{/**This is for the Popup generated on clicking Company for details
 			 * #TODO handel edit and save

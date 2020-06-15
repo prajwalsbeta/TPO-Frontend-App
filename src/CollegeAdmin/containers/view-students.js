@@ -105,6 +105,9 @@ function ViewStudents(props) {
 					filtering: true,
 					exportButton: true,
 				}}
+				onRowClick={(event, rowData) => {
+					fetchViewStudent(rowData._id);
+				}}
 			/>
 			{/**This is for the Popup generated on clicking student for details
 			 * #TODO handel edit and save

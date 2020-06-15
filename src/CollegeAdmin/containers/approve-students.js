@@ -105,6 +105,9 @@ function ApproveStudents(props) {
 					filtering: true,
 					exportButton: true,
 				}}
+				onRowClick={(event, rowData) => {
+					fetchApproveStudent(rowData._id);
+				}}
 			/>
 			{/**This is for the Popup generated on clicking student for details
 			 * #TODO handel edit and save

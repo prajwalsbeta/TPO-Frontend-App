@@ -102,6 +102,9 @@ function ApproveDate(props) {
 					filtering: true,
 					exportButton: true,
 				}}
+				onRowClick={(event, rowData) => {
+					toggleViewApproveDateDialog(rowData);
+				}}
 			/>
 			<MaterialTable
 				title="Pending Date List"

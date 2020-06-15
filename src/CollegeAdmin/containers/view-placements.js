@@ -39,6 +39,9 @@ function ViewPlacements(props) {
 					filtering: true,
 					exportButton: true,
 				}}
+				onRowClick={(event, rowData) => {
+					toggleViewPlacementDialog();
+				}}
 			/>
 			{/**This is for the Popup generated on clicking student for details
 			 * #TODO handel edit and save

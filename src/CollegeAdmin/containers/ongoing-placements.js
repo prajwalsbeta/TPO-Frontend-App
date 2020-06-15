@@ -1,18 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MaterialTable from 'material-table';
-import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Card } from '@material-ui/core';
+import {
+	Typography,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Grid,
+	Card,
+	Backdrop,
+	CircularProgress,
+	Snackbar,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectTableData, selectDialogOpen } from '../redux/ongoing-placements/view.ongoing.selectors';
-import { openViewOngoingDialog, toggleViewOngoingDialog } from '../redux/ongoing-placements/view.ongoing.actions';
-
-const useStyles = makeStyles((theme) => ({}));
+import {
+	selectTableData,
+	selectDialogOpen,
+	selectError,
+	selectLoading,
+	selectOngoingData,
+} from '../redux/ongoing-placements/view.ongoing.selectors';
+import {
+	openViewOngoingDialog,
+	toggleViewOngoingDialog,
+	fetchViewOngoingTable,
+} from '../redux/ongoing-placements/view.ongoing.actions';
+import Alert from '../components/ErrorAlert';
+const useStyles = makeStyles((theme) => ({
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#229',
+	},
+}));
 
 function OngoingPlacements(props) {
-	const { tableData, dialog_open, toggleViewOngoingDialog } = props;
+	const {
+		tableData,
+		dialog_open,
+		toggleViewOngoingDialog,
+		loading,
+		error,
+		ongoingData,
+		fetchViewOngoingTable,
+	} = props;
 	const classes = useStyles();
+	// useEffect(() => {
+	// 	fetchViewOngoingTable();
+	// }, []);
 
 	return (
 		<React.Fragment>
@@ -26,6 +64,12 @@ function OngoingPlacements(props) {
 						onClick: (event, rowData) => {
 							toggleViewOngoingDialog();
 						},
+					},
+					{
+						icon: 'refresh',
+						tooltip: 'Refresh Data',
+						isFreeAction: true,
+						onClick: () => fetchViewOngoingTable(),
 					},
 				]}
 				data={tableData.data}
@@ -66,16 +110,24 @@ function OngoingPlacements(props) {
 									<Typography variant="h6"> Current Status</Typography>
 								</DialogContent>
 								<DialogContent>
-									<Typography>Date:</Typography>
+									<Typography>
+										<b>Date:</b>
+									</Typography>
 								</DialogContent>
 								<DialogContent>
-									<Typography>Phase :</Typography>
+									<Typography>
+										<b>Phase :</b>
+									</Typography>
 								</DialogContent>
 								<DialogContent>
-									<Typography>Phase Details:</Typography>
+									<Typography>
+										<b>Phase Details:</b>
+									</Typography>
 								</DialogContent>
 								<DialogContent>
-									<Typography>Requirements Details:</Typography>
+									<Typography>
+										<b>Requirements Details:</b>
+									</Typography>
 								</DialogContent>
 							</Card>
 						</Grid>
@@ -85,16 +137,24 @@ function OngoingPlacements(props) {
 									<Typography variant="h6"> Next Phase</Typography>
 								</DialogContent>
 								<DialogContent>
-									<Typography>Date:</Typography>
+									<Typography>
+										<b>Date:</b>
+									</Typography>
 								</DialogContent>
 								<DialogContent>
-									<Typography>Phase :</Typography>
+									<Typography>
+										<b>Phase :</b>
+									</Typography>
 								</DialogContent>
 								<DialogContent>
-									<Typography>Phase Details:</Typography>
+									<Typography>
+										<b>Phase Details:</b>
+									</Typography>
 								</DialogContent>
 								<DialogContent>
-									<Typography>Requirements Details:</Typography>
+									<Typography>
+										<b>Requirements Details:</b>
+									</Typography>
 								</DialogContent>
 							</Card>
 						</Grid>
@@ -106,6 +166,17 @@ function OngoingPlacements(props) {
 					</Button>
 				</DialogActions>
 			</Dialog>
+
+			<Backdrop className={classes.backdrop} open={loading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
+			<Snackbar
+				open={error != ''}
+				autoHideDuration={6000}
+				anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+			>
+				<Alert severity="error">{error}</Alert>
+			</Snackbar>
 		</React.Fragment>
 	);
 }
@@ -113,10 +184,14 @@ function OngoingPlacements(props) {
 const mapStateToProps = createStructuredSelector({
 	tableData: selectTableData,
 	dialog_open: selectDialogOpen,
+	loading: selectLoading,
+	error: selectError,
+	ongoingData: selectOngoingData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleViewOngoingDialog: () => dispatch(toggleViewOngoingDialog()),
+	fetchViewOngoingTable: () => dispatch(fetchViewOngoingTable()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OngoingPlacements);

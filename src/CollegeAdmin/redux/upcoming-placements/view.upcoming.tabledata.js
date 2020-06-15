@@ -1,6 +1,6 @@
 export const tableData = {
 	columns: [
-		{ title: 'SR.NO', field: 'tableData.id' + 1, type: 'numeric' },
+		{ title: 'SR.NO', field: 'tableData.id', type: 'numeric' },
 		{ title: 'Company Name', field: 'company_name' },
 		{ title: 'Email', field: 'email', type: 'string' },
 		{ title: 'Date', field: 'c_date', defaultSort: 'asc' },

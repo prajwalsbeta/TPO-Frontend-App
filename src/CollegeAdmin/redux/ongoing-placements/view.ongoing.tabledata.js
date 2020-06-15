@@ -1,10 +1,10 @@
 export const tableData = {
 	columns: [
-		{ title: 'SR.NO', field: 'srNo', type: 'numeric' },
-		{ title: 'Company Name', field: 'name' },
+		{ title: 'SR.NO', field: 'tableData.id', type: 'numeric' },
+		{ title: 'Company Name', field: 'company_name' },
 		{ title: 'Email', field: 'email', type: 'string' },
-		{ title: 'Date', field: 'date', type: 'date' },
-		{ title: 'Phase', field: 'phase', type: 'string' },
+		{ title: 'Date', field: 'c_date', type: 'date' },
+		{ title: 'Phase', field: 'phase_title', type: 'string' },
 	],
 	data: [
 		{
@@ -36,4 +36,16 @@ export const tableData = {
 			email: 'bob@amazon.in',
 		},
 	],
+	ongoingData: {
+		_id: '',
+		company_name: '',
+		date: {
+			$date: {
+				$numberLong: '0',
+			},
+		},
+		email: '',
+		phase_title: '',
+		requirement: 0,
+	},
 };

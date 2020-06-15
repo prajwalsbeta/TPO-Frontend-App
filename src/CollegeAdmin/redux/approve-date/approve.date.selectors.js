@@ -16,3 +16,19 @@ export const selectRejectDateDialogStatus = createSelector(
 	[selectViewApproveDate],
 	(viewApproveDate) => viewApproveDate.reject_date_dialog_open
 );
+
+export const selectLoading = createSelector([selectViewApproveDate], (viewApproveDate) => viewApproveDate.loading);
+
+export const selectViewApprovedTableData = createSelector(
+	[selectViewApproveDate],
+	(viewApproveDate) => viewApproveDate.approvedTableData
+);
+
+export const selectTableModified = createSelector(
+	[selectViewApproveDate],
+	(viewApproveDate) => viewApproveDate.tableModified
+);
+
+export const selectError = createSelector([selectViewApproveDate], (viewApproveDate) => viewApproveDate.error);
+
+export const selectdateData = createSelector([selectViewApproveDate], (viewApproveDate) => viewApproveDate.dateData);

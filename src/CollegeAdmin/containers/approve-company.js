@@ -68,7 +68,7 @@ function ApproveCompany(props) {
 	const [reason, setReason] = useState('');
 	useEffect(() => {
 		fetchApproveCompanyTable();
-	}, []);
+	}, [tableModified]);
 
 	return (
 		<React.Fragment>

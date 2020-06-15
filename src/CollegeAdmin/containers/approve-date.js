@@ -9,37 +9,38 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	Divider,
+	Backdrop,
+	CircularProgress,
+	Snackbar,
 } from '@material-ui/core';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@material-ui/core/';
+import Alert from '../components/ErrorAlert';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-//Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-
 import {
 	selectViewDateDialogStatus,
 	selectUnapprovedTableData,
 	selectRejectDateDialogStatus,
+	selectLoading,
+	selectTableModified,
+	selectError,
+	selectViewApprovedTableData,
+	selectdateData,
 } from '../redux/approve-date/approve.date.selectors';
-import { toggleViewApproveDateDialog, toggleRejectDateDialog } from '../redux/approve-date/approve.date.actions';
-//Redux
-
-const drawerWidth = 240;
+import {
+	toggleViewApproveDateDialog,
+	toggleRejectDateDialog,
+	fetchApproveDateTable,
+	fetchPendingDateTable,
+	rejectApproveDate,
+	putApproveDate,
+} from '../redux/approve-date/approve.date.actions';
 const useStyles = makeStyles((theme) => ({
-	root: {
-		display: 'flex',
-	},
-	toolbar: theme.mixins.toolbar,
-	drawerPaper: {
-		width: drawerWidth,
-		textAlign: 'center',
-	},
-	content: {
-		flexGrow: 1,
-		padding: theme.spacing(3),
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#229',
 	},
 }));
 
@@ -47,41 +48,29 @@ function ApproveDate(props) {
 	const {
 		viewDateDialogStatus,
 		unapprovedTableData,
+		approvedTableData,
 		toggleViewApproveDateDialog,
 		rejectDateDialogStatus,
 		toggleRejectDateDialog,
+		loading,
+		fetchApproveDateTable,
+		fetchPendingDateTable,
+		putApproveDate,
+		tableModified,
+		error,
+		rejectApproveDate,
+		dateData,
 	} = props;
 
-	/**
-	 * Thid func crates the rows of table
-	 * @param {string} class_
-	 * @param {sring} board
-	 * @param {*} year
-	 * @param {float} percentage
-	 */
-	const [selectedDate, setSelectedDate] = React.useState(new Date('2020-08-18T21:11:54'));
-
+	const classes = useStyles();
+	const [selectedDate, setSelectedDate] = React.useState(new Date());
 	const handleDateChange = (date) => {
 		setSelectedDate(date);
 	};
-
-	function createData(class_, board, year, percentage) {
-		return { class_, board, year, percentage };
-	}
-
-	const rows = [createData('10th', 'SSC', '2015', '90')];
-
-	/****TODO add URL and setTableData */
-	// useEffect(()=>{
-	// 	axios.get('URL')
-	// 	.then(response=>{
-	// 		console.log(response);
-	// 	})
-	// 	.catch(err=>{
-	// 		console.error(err);
-	// 	});
-	// },[])
-
+	useEffect(() => {
+		fetchApproveDateTable();
+		fetchPendingDateTable();
+	}, [tableModified]);
 	return (
 		<React.Fragment>
 			<MaterialTable
@@ -92,13 +81,19 @@ function ApproveDate(props) {
 						icon: () => <VisibilityIcon />,
 						tooltip: 'View details',
 						onClick: (event, rowData) => {
-							toggleViewApproveDateDialog();
+							toggleViewApproveDateDialog(rowData);
 						},
+					},
+					{
+						icon: 'refresh',
+						tooltip: 'Refresh',
+						isFreeAction: true,
+						onClick: () => fetchApproveDateTable(),
 					},
 				]}
 				data={unapprovedTableData.data}
 				options={{
-					// grouping: true,
+					grouping: true,
 					headerStyle: {
 						backgroundColor: '#01579b',
 						color: '#FFF',
@@ -111,9 +106,17 @@ function ApproveDate(props) {
 			<MaterialTable
 				title="Pending Date List"
 				columns={unapprovedTableData.columns}
-				data={unapprovedTableData.data}
+				data={approvedTableData.data}
+				actions={[
+					{
+						icon: 'refresh',
+						tooltip: 'Refresh',
+						isFreeAction: true,
+						onClick: () => fetchPendingDateTable(),
+					},
+				]}
 				options={{
-					// grouping: true,
+					grouping: true,
 					headerStyle: {
 						backgroundColor: '#01579b',
 						color: '#FFF',
@@ -129,29 +132,44 @@ function ApproveDate(props) {
 			<Dialog
 				open={viewDateDialogStatus}
 				onClose={() => {
-					toggleViewApproveDateDialog();
+					toggleViewApproveDateDialog(dateData);
 				}}
 				aria-labelledby="Date-view-title"
 				fullWidth
 			>
 				<DialogTitle id="form-dialog-title">Company Date Request</DialogTitle>
 				<DialogContent>
-					<Typography>Requested Date:</Typography>
-				</DialogContent>
-				<DialogContent>
-					<Typography>Phase :</Typography>
-				</DialogContent>
-				<DialogContent>
-					<Typography>Phase Details:</Typography>
+					<DialogContent>
+						<Typography>
+							<b>Requested Date:</b>
+							{dateData.c_date}
+						</Typography>
+					</DialogContent>
+					<DialogContent>
+						<Typography>
+							<b>Phase :</b>
+							{` ${dateData.phase}`}
+						</Typography>
+					</DialogContent>
+					<DialogContent>
+						<Typography>
+							<b>Phase Details:</b>
+							{` ${dateData.phase}`}
+						</Typography>
+					</DialogContent>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={() => toggleViewApproveDateDialog()} color="primary">
+					<Button onClick={() => toggleViewApproveDateDialog(dateData)} color="primary" disabled={loading}>
 						Cancel
 					</Button>
-					<Button onClick={() => toggleViewApproveDateDialog()} color="primary">
+					<Button
+						onClick={() => putApproveDate(dateData._id, dateData.phase)}
+						color="primary"
+						disabled={loading}
+					>
 						Approve
 					</Button>
-					<Button onClick={() => toggleRejectDateDialog()} color="primary">
+					<Button onClick={() => toggleRejectDateDialog(dateData)} color="primary" disabled={loading}>
 						Suggest New
 					</Button>
 				</DialogActions>
@@ -159,36 +177,37 @@ function ApproveDate(props) {
 
 			<Dialog
 				open={rejectDateDialogStatus}
-				onClose={() => toggleRejectDateDialog()}
+				onClose={() => toggleRejectDateDialog(dateData)}
 				aria-labelledby="Date-view-title"
 				fullWidth
 			>
 				<DialogTitle id="Dialogue-reject">Suggest a new date:</DialogTitle>
-				<div style={{ margin: '20px' }}>
-					<DialogContent>
-						<Grid container justify="space-around">
-							<Grid item xs={6}>
-								<Typography>Requested Date:</Typography>
-							</Grid>
-							<Grid item xs={6}>
-								<Typography>19/08/2020</Typography>
-							</Grid>
+				<DialogContent>
+					<Grid container justify="space-around">
+						<Grid item xs={6}>
+							<Typography>
+								<b>Requested Date:</b>
+							</Typography>
 						</Grid>
-					</DialogContent>
+						<Grid item xs={6}>
+							<Typography>{dateData.c_date}</Typography>
+						</Grid>
+					</Grid>
+				</DialogContent>
+				<form onSubmit={() => rejectApproveDate(dateData._id, dateData.phase, selectedDate)}>
 					<DialogContent>
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
 							<Grid container justify="space-around">
 								<Grid item xs={6} padding={'10px'}>
-									<Typography>Suggest new Date:</Typography>
+									<Typography>
+										<b>Suggest new Date:</b>
+									</Typography>
 								</Grid>
-
 								<Grid item xs={6}>
 									<KeyboardDatePicker
-										disableToolbar
-										variant="inline"
 										format="dd/MM/yyyy"
 										margin="normal"
-										id="date-picker-inline"
+										id="date-picker"
 										label="Suggest a new date"
 										value={selectedDate}
 										onChange={handleDateChange}
@@ -200,22 +219,28 @@ function ApproveDate(props) {
 							</Grid>
 						</MuiPickersUtilsProvider>
 					</DialogContent>
-				</div>
-				<DialogActions>
-					<Button onClick={() => toggleRejectDateDialog()} color="primary">
-						Cancel
-					</Button>
-					<Button
-						onClick={() => {
-							toggleViewApproveDateDialog();
-							toggleRejectDateDialog();
-						}}
-						color="primary"
-					>
-						Submit
-					</Button>
-				</DialogActions>
+					<DialogActions>
+						<Button onClick={() => toggleRejectDateDialog()} color="primary" disabled={loading}>
+							Cancel
+						</Button>
+						<Button type="submit" color="primary" disabled={loading}>
+							Submit
+						</Button>
+					</DialogActions>
+				</form>
 			</Dialog>
+
+			<Snackbar
+				open={error != ''}
+				autoHideDuration={10000}
+				anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+			>
+				<Alert severity="error">{error}</Alert>
+			</Snackbar>
+
+			<Backdrop className={classes.backdrop} open={loading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
 		</React.Fragment>
 	);
 }
@@ -224,11 +249,20 @@ const mapStateToProps = createStructuredSelector({
 	viewDateDialogStatus: selectViewDateDialogStatus,
 	unapprovedTableData: selectUnapprovedTableData,
 	rejectDateDialogStatus: selectRejectDateDialogStatus,
+	approvedTableData: selectViewApprovedTableData,
+	loading: selectLoading,
+	tableModified: selectTableModified,
+	error: selectError,
+	dateData: selectdateData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	toggleViewApproveDateDialog: () => dispatch(toggleViewApproveDateDialog()),
-	toggleRejectDateDialog: () => dispatch(toggleRejectDateDialog()),
+	toggleViewApproveDateDialog: (id) => dispatch(toggleViewApproveDateDialog(id)),
+	toggleRejectDateDialog: (id) => dispatch(toggleRejectDateDialog(id)),
+	fetchApproveDateTable: () => dispatch(fetchApproveDateTable()),
+	fetchPendingDateTable: () => dispatch(fetchPendingDateTable()),
+	putApproveDate: (id, title) => dispatch(putApproveDate(id, title)),
+	rejectApproveDate: (id, title, date) => dispatch(rejectApproveDate(id, title, date)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApproveDate);
